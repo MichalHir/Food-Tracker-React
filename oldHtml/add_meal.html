@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Meal</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Add a Meal</h1>
+    <form id="mealForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+        <br><br>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required>
+        <br><br>
+
+        <label for="foods">Select Foods:</label>
+        <select id="foods" name="foods" multiple required></select>
+        <br><br>
+
+        <button type="button" onclick="add_meal()">Add Meal</button>
+        <button type="button" id="backButton">Back</button>
+    </form>
+
+    <script>
+        host_front="http://127.0.0.1:5500/frontend/"
+        host_back="http://127.0.0.1:8000/"
+        // host_back='https://food-tracker-django.onrender.com'
+        function isTokenExpired(token) {
+            if (!token) return true;
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+            return payload.exp < currentTime;
+        }
+
+        async function refreshToken() {
+            const refresh_token = localStorage.getItem('refresh_token');
+            return axios.post(`${host_back}api/token/refresh/`, { refresh: refresh_token })
+                .then(response => {
+                    localStorage.setItem('access_token', response.data.access);
+                    return response.data.access;
+                })
+                .catch(error => {
+                    window.location.href = `${host_front}login.html`;
+                });
+        }
+        function redirect_if_token_expired(token){
+                    if (!token || isTokenExpired(token)) {
+                        window.location.href = `${host_front}login.html`;
+                        return;
+                }}
+
+        function getUserIdFromToken() {
+            
+            const token = localStorage.getItem('access_token');
+            if (redirect_if_token_expired(token)) return;
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.user_id || payload.id;
+        }
+        
+        async function populateOptions() {
+            const token = localStorage.getItem('access_token');
+            if (redirect_if_token_expired(token)) return;
+
+            try {
+                const foodsResponse = await axios.get(`${host_back}api/foods/`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const foodsSelect = document.getElementById('foods');
+                foodsResponse.data.forEach(food => {
+                    const option = document.createElement('option');
+                    option.value = food.id;
+                    option.textContent = food.name;
+                    foodsSelect.appendChild(option);
+                });
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    await refreshToken();
+                    populateOptions();
+                } else {
+                    console.error('Error loading options:', error);
+                }
+            }
+        }
+
+        window.onload = populateOptions;
+
+        async function add_meal() {
+            const user = getUserIdFromToken();
+            if (!user) {
+                alert("User not authenticated.");
+                return;
+            }
+
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const food_info = Array.from(document.getElementById('foods').selectedOptions).map(option => parseInt(option.value, 10));
+
+            const mealData = { user, date, time, food_info };
+
+            const token = localStorage.getItem('access_token');
+            
+            try {
+                await axios.post(`${host_back}api/add_meals/`, mealData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                alert('Meal added successfully!');
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    await refreshToken();
+                    add_meal();
+                } else {
+                    console.error("Error adding meal:", error.response ? error.response.data : error.message);
+                    alert("Failed to add meal.");
+                }
+            }
+        }
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = `${host_front}daily_meals.html`;
+        });
+    </script>
+</body>
+</html>
