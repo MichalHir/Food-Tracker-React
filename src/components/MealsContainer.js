@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import MealContext from './MealContext'
+import { useNavigate } from 'react-router-dom'
 
 function MealsContainer() {
   //   const [foods, setFoods] = useState([])
   const { meals, setMeals } = useContext(MealContext)
   const [selectedDate, setSelectedDate] = useState('') // State for the selected date
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
+  const navigate = useNavigate() // This must be inside the component body
 
   useEffect(() => {
     console.log('starting app')
@@ -20,13 +22,14 @@ function MealsContainer() {
   }
   //   Fetch meals by date
   function fetchMealsByDate() {
-    // debugger
-    console.log('!!!')
     if (selectedDate) {
       const filtered = meals.filter((meal) => meal.date === selectedDate)
       setFilteredMeals(filtered)
       console.log(filteredMeals)
     }
+  }
+  const goToAddPage = () => {
+    navigate('/addMeal') // Use this function for navigation
   }
 
   // Function to fetch and display meals based on selected date using Axios
@@ -149,6 +152,9 @@ function MealsContainer() {
           <p>No meals found for the selected date.</p>
         )}
       </div>
+      <button onClick={goToAddPage} type="button">
+        Add meal
+      </button>
     </div>
   )
 }

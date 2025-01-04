@@ -13,8 +13,7 @@
   ],
   "meals": [
     {
-      "user": 1,
-      "date": "2025-01-22",
+      "date": "2025-01-04",
       "time": "18:00",
       "foodInfo": ["rice", "chicken"]
     }

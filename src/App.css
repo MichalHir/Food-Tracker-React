@@ -36,3 +36,109 @@
     transform: rotate(360deg);
   }
 }
+
+/* nav bar */
+
+/* General Styling for Navbar */
+.navbar {
+  background-color: #333;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar-inverse .navbar-nav {
+  display: flex; /* Flexbox for horizontal alignment */
+  flex-direction: row;
+  align-items: center;
+  padding-left: 0;
+  margin: 0;
+  list-style: none; /* Remove default list styles */
+}
+
+.navbar-nav > li {
+  margin-right: 15px; /* Space between left-side buttons */
+}
+
+/* Left-side Link Styling */
+.navbar-inverse .navbar-nav > li > a {
+  color: #d5d5d5;
+  text-decoration: none;
+  padding: 10px 20px; /* Uniform button size */
+  display: inline-block; /* Ensure button-like behavior */
+  text-align: center;
+  line-height: 1.5;
+  border: 1px solid transparent; /* Invisible border for consistent sizing */
+  border-radius: 4px;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #fff; /* Text color on hover */
+  background-color: #575757; /* Background color on hover */
+  border-color: #575757; /* Add border color on hover */
+}
+
+/* Right-side menu (Account and Date) */
+.navbar-right {
+  display: flex; /* Flexbox for horizontal alignment */
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto; /* Push to the far right */
+  justify-content: flex-end; /* Ensure alignment to the right */
+}
+
+.navbar-right > li {
+  margin-left: 15px; /* Space between right-side buttons */
+}
+
+/* Right-side Button Styling */
+.navbar-inverse .navbar-nav.navbar-right > li > a {
+  color: #d5d5d5;
+  text-decoration: none;
+  padding: 10px 20px; /* Uniform button size */
+  text-align: center;
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.navbar-inverse .navbar-nav.navbar-right > li > a:hover {
+  color: #fff;
+  background-color: #575757;
+  border-color: #575757;
+}
+
+/* Navbar Toggle Button for Small Screens */
+.navbar-toggle {
+  border-color: #ddd;
+  background-color: transparent;
+}
+
+.navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+/* Mobile View */
+@media (max-width: 767px) {
+  .navbar-nav,
+  .navbar-right {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    align-items: flex-start; /* Align to the left */
+  }
+
+  .navbar-nav > li,
+  .navbar-right > li {
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 10px; /* Space between items when stacked */
+  }
+
+  .navbar-inverse .navbar-nav > li > a,
+  .navbar-inverse .navbar-nav.navbar-right > li > a {
+    width: 100%; /* Full width buttons in mobile view */
+  }
+}

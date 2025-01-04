@@ -1,5 +1,5 @@
 import { createContext } from 'react'
 
-const foodContext = createContext()
+const FoodContext = createContext()
 
-export default foodContext
+export default FoodContext
