@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate() // This must be inside the component body
   function login() {
     console.log('!!!')
-    if (password && username) {
+    if (password && email) {
       navigate('/')
       // Optionally update the context or perform an API call here
     } else {
-      alert('Please fill out all fields!')
-      console.log('Please fill out all fields')
+      alert('Please enter both email and password!')
+      console.log('Please enter both email and password')
       navigate('/')
     }
   }
@@ -20,19 +20,19 @@ function Login() {
     <div>
       Login
       <h1>Add a Meal</h1>
-      <label for="userName">userName:</label>
+      <label for="email">email:</label>
       <input
-        type="string"
+        type="text"
         className="form-control"
         size="50"
-        placeholder="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <label for="password">Password:</label>
       <input
-        type="string"
+        type="text"
         className="form-control"
         size="50"
         placeholder="password"

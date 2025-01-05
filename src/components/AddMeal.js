@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function AddMeal() {
-  const { foods, setFoods } = useContext(FoodContext)
+  const { foods } = useContext(FoodContext)
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [selectedFoods, setSelectedFoods] = useState([])
-  const navigate = useNavigate() // This must be inside the component body
+  const navigate = useNavigate()
 
   const handleFoodSelection = (event) => {
     const selectedOptions = Array.from(
@@ -17,25 +18,35 @@ function AddMeal() {
     setSelectedFoods(selectedOptions)
   }
 
-  const addNewMeal = () => {
+  const addNewMeal = async () => {
     console.log('!!!')
     if (date && time && selectedFoods.length > 0) {
       const newMeal = { date, time, foods: selectedFoods }
-      console.log('Meal Added:', newMeal)
-      // Optionally update the context or perform an API call here
+      try {
+        const response = await axios.post(
+          'http://localhost:3005/meals',
+          newMeal
+        )
+        setTime('')
+        setDate('')
+        setSelectedFoods([])
+        console.log('Meal Added:', newMeal)
+      } catch (error) {
+        console.error('Error saving meal:', error)
+        alert('Failed to add meal. Please try again.')
+      }
     } else {
       alert('Please fill out all fields!')
       console.log('Please fill out all fields')
     }
   }
   const goToHomePage = () => {
-    navigate('/') // Use this function for navigation
+    navigate('/')
   }
   return (
     <div>
       <h1>Add a Meal</h1>
       <label for="date">Date:</label>
-      {/* <br><br> */}
       <input
         type="date"
         className="form-control"
@@ -53,7 +64,6 @@ function AddMeal() {
         onChange={(e) => setTime(e.target.value)}
         required
       />
-      {/* <br><br> */}
       <label for="foods">Select Foods:</label>
       <select
         id="foods"
@@ -70,7 +80,6 @@ function AddMeal() {
           </option>
         ))}
       </select>
-      {/* <br><br> */}
       <button type="button" onClick={addNewMeal}>
         Add Meal
       </button>

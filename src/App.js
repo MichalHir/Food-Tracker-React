@@ -1,4 +1,4 @@
-import logo from './logo.svg'
+// import logo from './logo.svg'
 import './App.css'
 import MealsContainer from './components/MealsContainer'
 import { useState } from 'react'

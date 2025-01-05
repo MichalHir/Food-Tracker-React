@@ -1,50 +1,75 @@
 import React, { useContext, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function AddFood() {
   const { foods, setFoods } = useContext(FoodContext)
   const [name, setName] = useState('')
-  const [type, setType] = useState('')
-  const navigate = useNavigate() // This must be inside the component body
+  const [foodTypes, setFoodTypes] = useState(['carbs', 'protein'])
+  const [selectedTypes, setSelectedTypes] = useState([])
+  const navigate = useNavigate()
 
-  const addNewFood = () => {
+  const addNewFood = async () => {
     console.log('!!!')
-    if (name && type) {
-      const newFood = { name, type }
-      console.log('Food Added:', newFood)
-      // Optionally update the context or perform an API call here
+    if (name && selectedTypes.length > 0) {
+      const newFood = { name, type: selectedTypes }
+      try {
+        const response = await axios.post(
+          'http://localhost:3005/foods',
+          newFood
+        )
+        setFoods([...foods, newFood])
+        setName('')
+        setSelectedTypes([])
+        console.log('Food Added:', newFood)
+      } catch (error) {
+        console.error('Error saving food:', error)
+        alert('Failed to add food. Please try again.')
+      }
     } else {
       alert('Please fill out all fields!')
       console.log('Please fill out all fields')
     }
   }
   const goToHomePage = () => {
-    navigate('/') // Use this function for navigation
+    navigate('/')
+  }
+  const handleTypeSelection = (event) => {
+    const selectedOptions = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    )
+    setSelectedTypes(selectedOptions)
   }
   return (
     <div>
       <h1>Add a Food</h1>
       <label for="name">Name:</label>
-      {/* <br><br> */}
       <input
-        type="string"
+        type="text"
         className="form-control"
-        placeholder="name"
+        placeholder="Enter food name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
       <label for="type">Type:</label>
-      <input
-        type="string"
-        className="form-control"
-        placeholder="type"
-        value={type}
-        onChange={(e) => setType(e.target.value)}
+      <select
+        id="foods"
+        name="foods"
+        multiple
+        value={selectedTypes}
+        onChange={handleTypeSelection}
         required
-      />
-      {/* <br><br> */}
+        className="form-control"
+      >
+        {foodTypes.map((foodTypes, index) => (
+          <option key={index} value={foodTypes}>
+            {foodTypes}
+          </option>
+        ))}
+      </select>
       <button type="button" onClick={addNewFood}>
         Add Food
       </button>

@@ -1,21 +1,32 @@
 {
   "foods": [
     {
-      "id": 1,
+      "id": "1",
       "name": "rice",
       "type": "carbs"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "chicken",
       "type": "protein"
+    },
+    {
+      "id": "f20d",
+      "name": "bread",
+      "type": [
+        "carbs"
+      ]
     }
   ],
   "meals": [
     {
       "date": "2025-01-04",
       "time": "18:00",
-      "foodInfo": ["rice", "chicken"]
+      "foodInfo": [
+        "rice",
+        "chicken"
+      ],
+      "id": "c3b6"
     }
   ]
 }
