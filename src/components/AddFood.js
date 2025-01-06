@@ -2,11 +2,18 @@ import React, { useContext, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import '../App.css'
 
 function AddFood() {
   const { foods, setFoods } = useContext(FoodContext)
   const [name, setName] = useState('')
-  const [foodTypes, setFoodTypes] = useState(['carbs', 'protein'])
+  const [foodTypes] = useState([
+    'carbs',
+    'protein',
+    'sweet',
+    'fruit',
+    'vegtable',
+  ])
   const [selectedTypes, setSelectedTypes] = useState([])
   const navigate = useNavigate()
 
@@ -15,10 +22,7 @@ function AddFood() {
     if (name && selectedTypes.length > 0) {
       const newFood = { name, type: selectedTypes }
       try {
-        const response = await axios.post(
-          'http://localhost:3005/foods',
-          newFood
-        )
+        await axios.post('http://localhost:3005/foods', newFood)
         setFoods([...foods, newFood])
         setName('')
         setSelectedTypes([])
@@ -43,7 +47,7 @@ function AddFood() {
     setSelectedTypes(selectedOptions)
   }
   return (
-    <div>
+    <div className="form-container">
       <h1>Add a Food</h1>
       <label for="name">Name:</label>
       <input

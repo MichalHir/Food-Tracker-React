@@ -3,12 +3,12 @@ import './App.css'
 import MealsContainer from './components/MealsContainer'
 import { useState } from 'react'
 import MealContext from './components/MealContext'
-import FoodContex from './components/FoodContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/NavBar'
 import AddMeal from './components/AddMeal'
 import AddFood from './components/AddFood'
 import Login from './components/Login'
+import FoodContext from './components/FoodContext'
 
 function App() {
   const [meals, setMeals] = useState([])
@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <MealContext.Provider value={{ meals, setMeals }}>
-          <FoodContex.Provider value={{ foods, setFoods }}>
+          <FoodContext.Provider value={{ foods, setFoods }}>
             <Navbar />
             <Routes>
               <Route path="/" element={<MealsContainer />} />
@@ -36,7 +36,7 @@ function App() {
                 }
               />
             </Routes>
-          </FoodContex.Provider>
+          </FoodContext.Provider>
         </MealContext.Provider>
       </BrowserRouter>
     </div>

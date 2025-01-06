@@ -8,6 +8,7 @@ function MealsContainer() {
   const { meals, setMeals } = useContext(MealContext)
   const [selectedDate, setSelectedDate] = useState('') // State for the selected date
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
+  const [clicked, setClicked] = useState(false)
   const navigate = useNavigate() // This must be inside the component body
 
   useEffect(() => {
@@ -17,6 +18,7 @@ function MealsContainer() {
   function getMeals() {
     axios.get('http://localhost:3005/meals').then((response) => {
       setMeals(response.data) // Save the API data in state
+      setClicked(true)
       console.log(response.data)
     })
   }
@@ -26,72 +28,15 @@ function MealsContainer() {
       const filtered = meals.filter((meal) => meal.date === selectedDate)
       setFilteredMeals(filtered)
       console.log(filteredMeals)
+      setClicked(true)
+    } else {
+      setFilteredMeals([]) // Clear filtered meals if no date is selected
+      setClicked(false) // Ensure the header shows the "no selected date" message
     }
   }
   const goToAddPage = () => {
     navigate('/addMeal') // Use this function for navigation
   }
-
-  // Function to fetch and display meals based on selected date using Axios
-  //   function fetchMealsByDate() {
-  //     // const selectedDate = document.getElementById('dateSelect').value // Declare and assign selectedDate first
-  //     // const mealsList = document.getElementById('mealsList')
-  //     // const token = localStorage.getItem('access_token')
-  //     // Clear previous results
-  //     mealsList.innerHTML = ''
-  //     // Check if token exists and is valid
-  //     // if (!token || isTokenExpired(token)) {
-  //     //   window.location.href = `${host_front}login.html`
-  //     //   return // Stop function execution if token is invalid
-  //     // }
-  //     // Fetch meals from backend for the selected date
-  //     axios
-  //       .get(`${host_back}api/meals_by_date/?date=${selectedDate}`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       })
-
-  //       .then((response) => {
-  //         const meals = response.data.meals
-  //         const userId = response.data.userId
-  //         if (meals.length === 0) {
-  //           mealsList.innerHTML = '<p>No meals found for this date.</p>'
-  //         } else {
-  //           meals.forEach((meal) => {
-  //             const mealItem = document.createElement('li')
-  //             mealItem.classList.add('meal-item')
-  //             mealItem.innerHTML = `
-  //                 <h3>Time: ${meal.time} User:${meal.username} </h3>
-  //                 <ul>${meal.foods
-  //                   .map((food) => `<li>${food}</li>`)
-  //                   .join('')}</ul>
-  //                 <button class="delete-btn" data-meal-id="${
-  //                   meal.meal_id
-  //                 }">Delete</button>
-  //             `
-  //             mealsList.appendChild(mealItem)
-  //             // Add event listener for delete button
-  //             const deleteButton = mealItem.querySelector('.delete-btn')
-  //             deleteButton.addEventListener('click', () => {
-  //               deleteMeal(meal.meal_id, selectedDate, token) // Call function to handle deletion
-  //             })
-  //           })
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         if (error.response && error.response.status === 401) {
-  //           // Handle token expiration or unauthorized access, possibly redirect to login
-  //           window.location.href = `${host_front}login.html`
-  //         } else {
-  //           console.error('Error fetching meals:', error)
-  //           mealsList.innerHTML = '<p>There was an error fetching meals.</p>'
-  //         }
-  //       })
-  //   }
-  //   document
-  //     .getElementById('addMealButton')
-  //     .addEventListener('click', function () {
-  //       window.location.href = `${host_front}add_meal.html`
-  //     })
   return (
     <div>
       <div class="header">
@@ -109,23 +54,8 @@ function MealsContainer() {
         />
         <button onClick={fetchMealsByDate}>Show Meals</button>
       </div>
-      {/* <div class="container">
+      {/* <div class="meals-container">
         <div class="row">
-          {meals.length > 0 ? (
-            // If meals exist, map over the array and display them
-            meals.map((meal, index) => (
-              <div key={index} className="col-sm-4">
-                <div className="panel panel-primary">
-                  <div className="panel-heading"></div>
-                  <div className="panel-footer">
-                    {meal.date} - {meal.time} - {meal.foodInfo}
-                    {/* <button
-                      className="card-button"
-                      onClick={() => addToCart(product)} // Corrected the onClick handler here
-                    >
-                      Add To Cart
-                    </button> */}
-      {/* <Cart /> */}
       {/* </div>
                 </div>
               </div>
@@ -140,18 +70,35 @@ function MealsContainer() {
           )}
         </div> */}
       {/* </div>  */}
-      <div>
-        <h2>Filtered Meals</h2>
-        {filteredMeals.length > 0 ? (
-          filteredMeals.map((meal) => (
-            <div key={meal.id}>
-              {meal.date} - {meal.time} - {meal.foodInfo}
+
+      <h2>
+        {clicked ? `Meals for ${selectedDate}` : 'Clicked? No selected date...'}
+      </h2>
+      <div className="meals-container">
+        <div className="row">
+          {filteredMeals.length > 0 ? (
+            filteredMeals.map((meal) => (
+              <div key={meal.id} className="col-sm-4">
+                <div className="meal-card">
+                  <h4>{meal.date}</h4>
+                  <p>Time: {meal.time}</p>
+                  <p>
+                    Foods:{' '}
+                    {Array.isArray(meal.foodInfo)
+                      ? meal.foodInfo.join(', ')
+                      : 'No foods available'}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12">
+              <p>No meals found for the selected date.</p>
             </div>
-          ))
-        ) : (
-          <p>No meals found for the selected date.</p>
-        )}
+          )}
+        </div>
       </div>
+
       <button onClick={goToAddPage} type="button">
         Add meal
       </button>

@@ -1,15 +1,18 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 function AddMeal() {
   const { foods } = useContext(FoodContext)
+  const [foodsChoice, setFoodsChoice] = useState([])
+  const [loading, setLoading] = useState(true)
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [selectedFoods, setSelectedFoods] = useState([])
   const navigate = useNavigate()
 
+  console.log('Foods from Context:', foods)
   const handleFoodSelection = (event) => {
     const selectedOptions = Array.from(
       event.target.selectedOptions,
@@ -18,15 +21,29 @@ function AddMeal() {
     setSelectedFoods(selectedOptions)
   }
 
+  useEffect(() => {
+    if (foods.length === 0) {
+      axios
+        .get('http://localhost:3005/foods')
+        .then((response) => {
+          setFoodsChoice(response.data)
+          setLoading(false)
+        })
+        .catch((error) => {
+          console.error('Error fetching foods:', error)
+          setLoading(false)
+        })
+    } else {
+      setFoodsChoice(foods)
+      setLoading(false)
+    }
+  }, [foods])
+
   const addNewMeal = async () => {
-    console.log('!!!')
     if (date && time && selectedFoods.length > 0) {
-      const newMeal = { date, time, foods: selectedFoods }
+      const newMeal = { date, time, foodInfo: selectedFoods }
       try {
-        const response = await axios.post(
-          'http://localhost:3005/meals',
-          newMeal
-        )
+        await axios.post('http://localhost:3005/meals', newMeal)
         setTime('')
         setDate('')
         setSelectedFoods([])
@@ -44,7 +61,7 @@ function AddMeal() {
     navigate('/')
   }
   return (
-    <div>
+    <div className="form-container">
       <h1>Add a Meal</h1>
       <label for="date">Date:</label>
       <input
@@ -74,11 +91,18 @@ function AddMeal() {
         required
         className="form-control"
       >
-        {foods.map((food, index) => (
-          <option key={index} value={food}>
-            {food}
-          </option>
-        ))}
+        <h2>Select Foods</h2>
+        {loading ? (
+          <option disabled>Loading foods...</option>
+        ) : foodsChoice.length > 0 ? (
+          foodsChoice.map((food) => (
+            <option key={food.id} value={food.name}>
+              {food.name}
+            </option>
+          ))
+        ) : (
+          <option disabled>No foods available</option>
+        )}
       </select>
       <button type="button" onClick={addNewMeal}>
         Add Meal
