@@ -41,6 +41,13 @@
       "type": [
         "protein"
       ]
+    },
+    {
+      "id": "08b3",
+      "name": "rice",
+      "type": [
+        "carbs"
+      ]
     }
   ],
   "meals": [

@@ -18,8 +18,8 @@ function MealsContainer() {
   }, []) // Empty dependency array means it runs only once
   function getMeals() {
     axios
-      .get('http://localhost:3005/meals')
-      // .get('http://127.0.0.1:8000/api/meals/')
+      // .get('http://localhost:3005/meals')
+      .get('http://127.0.0.1:8000/api/meals/')
       .then((response) => {
         setMeals(response.data)
       })
@@ -53,8 +53,8 @@ function MealsContainer() {
   function deleteMeal(mealId) {
     console.log(mealId)
     axios
-      .delete(`http://localhost:3005/meals/${mealId}`)
-      // .delete (`http://127.0.0.1:8000/meals/${mealId}`)
+      // .delete(`http://localhost:3005/meals/${mealId}`)
+      .delete(`http://127.0.0.1:8000/meals/${mealId}/`)
       .then((response) => {
         console.log('Meal deleted successfully:', response.data)
         // Optionally refresh the meals list or update UI here

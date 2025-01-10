@@ -42,10 +42,10 @@ function AddMeal() {
 
   const addNewMeal = async () => {
     if (date && time && selectedFoods.length > 0) {
-      const newMeal = { date, time, foodInfo: selectedFoods }
+      const newMeal = { date, time, food_info: selectedFoods }
       try {
-        await axios.post('http://localhost:3005/meals', newMeal)
-        // await axios.post('http://127.0.0.1:8000/api/meals/', newMeal)
+        // await axios.post('http://localhost:3005/meals', newMeal)
+        await axios.post('http://127.0.0.1:8000/api/meals/', newMeal)
         setTime('')
         setDate('')
         setSelectedFoods([])
@@ -96,7 +96,7 @@ function AddMeal() {
           <option disabled>Loading foods...</option>
         ) : foodsChoice.length > 0 ? (
           foodsChoice.map((food) => (
-            <option key={food.id} value={food.name}>
+            <option key={food.id} value={food.id}>
               {food.name}
             </option>
           ))

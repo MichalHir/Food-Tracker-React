@@ -39,7 +39,7 @@ function Navbar() {
               )}
               <li>
                 <Link to="/login">
-                  {login ? `hello ${username}` : 'Your Account'}
+                  {login ? `hello ${login.username}` : 'Your Account'}
                 </Link>
               </li>
               <li>

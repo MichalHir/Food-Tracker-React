@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -7,23 +7,28 @@ import '../App.css'
 function AddFood() {
   const { foods, setFoods } = useContext(FoodContext)
   const [name, setName] = useState('')
-  const [foodTypes] = useState([
-    'carbs',
-    'protein',
-    'sweet',
-    'fruit',
-    'vegtable',
-  ])
+  const [foodTypes, setFoodTypes] = useState([])
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/api/foodTypes/')
+      .then((response) => {
+        setFoodTypes(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching foods TYPES:', error)
+      })
+  }, [])
   const [selectedTypes, setSelectedTypes] = useState([])
   const navigate = useNavigate()
 
   const addNewFood = async () => {
     if (name && selectedTypes.length > 0) {
-      const newFood = { name, type: selectedTypes }
+      const newFood = { name, typesOfFood: selectedTypes }
 
       try {
-        const response = await axios.get('http://localhost:3005/foods') // Fetch existing foods
-        // const response = await axios.get('http://127.0.0.1:8000/api/foods/')
+        // const response = await axios.get('http://localhost:3005/foods') // Fetch existing foods
+        const response = await axios.get('http://127.0.0.1:8000/api/foods/')
+        setFoods(response.data)
         const existingFoods = response.data
         const foodExists = existingFoods.some(
           (food) => food.name.toLowerCase() === name.toLowerCase()
@@ -33,8 +38,8 @@ function AddFood() {
           console.log('Duplicate food detected:', name)
           return // Stop execution if food exists
         }
-        await axios.post('http://localhost:3005/foods', newFood)
-        // await axios.post('http://127.0.0.1:8000/api/foods/', newFood)
+        // await axios.post('http://localhost:3005/foods', newFood)
+        await axios.post('http://127.0.0.1:8000/api/foods/', newFood)
         setFoods([...foods, newFood])
         setName('')
         setSelectedTypes([])
@@ -79,14 +84,15 @@ function AddFood() {
         required
       >
         {foodTypes.map((foodTypes, index) => (
-          <option key={index} value={foodTypes}>
-            {foodTypes}
+          <option key={index} value={foodTypes.id}>
+            {foodTypes.type}
           </option>
         ))}
       </select>
       <button type="button" onClick={addNewFood}>
         Add Food
       </button>
+      <div>{foods.map((food) => food.name)}</div>
       <button onClick={goToHomePage} type="button">
         back
       </button>

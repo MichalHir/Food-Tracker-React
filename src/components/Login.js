@@ -40,7 +40,7 @@ function Login() {
   }
   return (
     <div>
-      {/* <div>{message}</div> */}
+      <div>{message}</div>
       <h1>Login</h1>
       UserName:
       <input
