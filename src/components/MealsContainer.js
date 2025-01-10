@@ -19,6 +19,7 @@ function MealsContainer() {
   function getMeals() {
     axios
       .get('http://localhost:3005/meals')
+      // .get('http://127.0.0.1:8000/api/meals/')
       .then((response) => {
         setMeals(response.data)
       })
@@ -53,6 +54,7 @@ function MealsContainer() {
     console.log(mealId)
     axios
       .delete(`http://localhost:3005/meals/${mealId}`)
+      // .delete (`http://127.0.0.1:8000/meals/${mealId}`)
       .then((response) => {
         console.log('Meal deleted successfully:', response.data)
         // Optionally refresh the meals list or update UI here
@@ -90,22 +92,6 @@ function MealsContainer() {
           Show Meals
         </button>
       </div>
-      {/* <div class="meals-container">
-        <div class="row">
-      {/* </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            // If no products are available, show a loading message or a placeholder
-            <div className="col-sm-4">
-              <div className="panel panel-default">
-                <div className="panel-body">Loading meals list...</div>
-              </div>
-            </div>
-          )}
-        </div> */}
-      {/* </div>  */}
 
       {clicked && <h2>Meals for {selectedDate}</h2>}
       <div className="meals-container">

@@ -9,33 +9,37 @@ import AddMeal from './components/AddMeal'
 import AddFood from './components/AddFood'
 import Login from './components/Login'
 import FoodContext from './components/FoodContext'
+import LoginContext from './components/LoginContext'
 
 function App() {
   const [meals, setMeals] = useState([])
   const [foods, setFoods] = useState([])
+  const [login, setLogin] = useState([])
   return (
     <div className="App">
       <BrowserRouter>
         <MealContext.Provider value={{ meals, setMeals }}>
           <FoodContext.Provider value={{ foods, setFoods }}>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<MealsContainer />} />
-              <Route path="/addMeal" element={<AddMeal />} />
-              <Route path="/addFOOD" element={<AddFood />} />
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/about"
-                element={
-                  <>
-                    <h1>
-                      this is an app that helps you to track and manage your
-                      meals
-                    </h1>
-                  </>
-                }
-              />
-            </Routes>
+            <LoginContext.Provider value={{ login, setLogin }}>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<MealsContainer />} />
+                <Route path="/addMeal" element={<AddMeal />} />
+                <Route path="/addFOOD" element={<AddFood />} />
+                <Route path="/login" element={<Login />} />
+                <Route
+                  path="/about"
+                  element={
+                    <>
+                      <h1>
+                        this is an app that helps you to track and manage your
+                        meals
+                      </h1>
+                    </>
+                  }
+                />
+              </Routes>
+            </LoginContext.Provider>
           </FoodContext.Provider>
         </MealContext.Provider>
       </BrowserRouter>

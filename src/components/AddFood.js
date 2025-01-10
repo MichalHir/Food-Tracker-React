@@ -18,11 +18,23 @@ function AddFood() {
   const navigate = useNavigate()
 
   const addNewFood = async () => {
-    console.log('!!!')
     if (name && selectedTypes.length > 0) {
       const newFood = { name, type: selectedTypes }
+
       try {
+        const response = await axios.get('http://localhost:3005/foods') // Fetch existing foods
+        // const response = await axios.get('http://127.0.0.1:8000/api/foods/')
+        const existingFoods = response.data
+        const foodExists = existingFoods.some(
+          (food) => food.name.toLowerCase() === name.toLowerCase()
+        )
+        if (foodExists) {
+          alert(`Food with name "${name}" already exists.`)
+          console.log('Duplicate food detected:', name)
+          return // Stop execution if food exists
+        }
         await axios.post('http://localhost:3005/foods', newFood)
+        // await axios.post('http://127.0.0.1:8000/api/foods/', newFood)
         setFoods([...foods, newFood])
         setName('')
         setSelectedTypes([])
@@ -52,7 +64,6 @@ function AddFood() {
       <label for="name">Name:</label>
       <input
         type="text"
-        className="form-control"
         placeholder="Enter food name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -66,7 +77,6 @@ function AddFood() {
         value={selectedTypes}
         onChange={handleTypeSelection}
         required
-        className="form-control"
       >
         {foodTypes.map((foodTypes, index) => (
           <option key={index} value={foodTypes}>

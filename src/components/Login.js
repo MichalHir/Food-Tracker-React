@@ -1,46 +1,64 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import LoginContext from './LoginContext'
+import { jwtDecode } from 'jwt-decode'
 
 function Login() {
-  const [email, setEmail] = useState('')
+  const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const { login, setLogin } = useContext(LoginContext)
+  const [message, setMessage] = useState('')
   const navigate = useNavigate() // This must be inside the component body
-  function login() {
-    console.log('!!!')
-    if (password && email) {
-      navigate('/')
-      // Optionally update the context or perform an API call here
-    } else {
-      alert('Please enter both email and password!')
-      console.log('Please enter both email and password')
-      navigate('/')
+  function doLogin() {
+    console.log(`login success with username: ${userName} password:${password}`)
+    const loginData = {
+      username: userName,
+      password: password,
     }
+    axios
+      .post('http://127.0.0.1:8000/login/', loginData)
+      .then((response) => {
+        console.log(response.data.access)
+        const token = jwtDecode(response.data.access)
+        localStorage.setItem('token', response.data.access)
+        setLogin(token)
+        navigate('/')
+      })
+      .catch((error) => {
+        console.log(error)
+        setMessage('Login Failed please try again')
+      })
+    // if (password && userName) {
+    //    navigate('/')
+    //    Optionally update the context or perform an API call here
+    // } else {
+    //   alert('Please enter both email and password!')
+    //   console.log('Please enter both email and password')
+    //   navigate('/')
+    // }
   }
   return (
     <div>
-      Login
-      <h1>Add a Meal</h1>
-      <label for="email">email:</label>
+      {/* <div>{message}</div> */}
+      <h1>Login</h1>
+      UserName:
       <input
-        type="text"
-        className="form-control"
         size="50"
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="UserName"
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
         required
       />
-      <label for="password">Password:</label>
+      Password:
       <input
-        type="text"
-        className="form-control"
         size="50"
         placeholder="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="button" onClick={login}>
+      <button type="button" onClick={doLogin}>
         Login
       </button>
     </div>

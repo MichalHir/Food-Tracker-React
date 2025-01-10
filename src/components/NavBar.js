@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import LoginContext from './LoginContext'
 
 function Navbar() {
+  const { login, setLogin } = useContext(LoginContext)
   // Get today's date
   const today = new Date()
   const formattedDate = today.toLocaleDateString('en-US', {
@@ -30,12 +32,18 @@ function Navbar() {
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
+              {login?.is_admin && (
+                <li>
+                  <Link to="/login">Admin</Link>
+                </li>
+              )}
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login">
+                  {login ? `hello ${username}` : 'Your Account'}
+                </Link>
               </li>
               <li>
                 <a href="https://www.google.co.il">
-                  <span className="glyphicon glyphicon-shopping-cart"></span>
                   Today's date:{formattedDate}
                 </a>
               </li>

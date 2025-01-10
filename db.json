@@ -3,12 +3,16 @@
     {
       "id": "1",
       "name": "rice",
-      "type": "carbs"
+      "type": [
+        "carbs"
+      ]
     },
     {
       "id": "2",
       "name": "chicken",
-      "type": "protein"
+      "type": [
+        "protein"
+      ]
     },
     {
       "id": "f20d",
@@ -22,6 +26,20 @@
       "name": "Apple",
       "type": [
         "fruit"
+      ]
+    },
+    {
+      "id": "12c3",
+      "name": "honey",
+      "type": [
+        "fruit"
+      ]
+    },
+    {
+      "id": "4028",
+      "name": "cheese",
+      "type": [
+        "protein"
       ]
     }
   ],
@@ -52,6 +70,22 @@
       "time": "01:41",
       "foodInfo": [
         "Apple"
+      ]
+    },
+    {
+      "id": "d44d",
+      "date": "2025-01-09",
+      "time": "19:44",
+      "foodInfo": [
+        "chicken"
+      ]
+    },
+    {
+      "id": "d1c4",
+      "date": "2025-01-09",
+      "time": "23:03",
+      "foodInfo": [
+        "bread"
       ]
     }
   ]

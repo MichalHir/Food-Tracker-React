@@ -71,16 +71,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-        <!-- await axios.post(
-          "https://budget-management-system-1fqb.onrender.com/transaction/transactions/",
-          {
-            ...formValues,
-            category: parseInt(formValues.category),
-          },
-          { headers: { Authorization: `Bearer ${authToken}` } }
-        );
-      }
+npm start
+json-server --watch db.json --port 3005
+http://127.0.0.1:8000/
 
+<!-- await axios.post(
+"https://budget-management-system-1fqb.onrender.com/transaction/transactions/",
+{
+...formValues,
+category: parseInt(formValues.category),
+},
+{ headers: { Authorization: `Bearer ${authToken}` } }
+);
+}
 
       SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),-->

@@ -24,7 +24,8 @@ function AddMeal() {
   useEffect(() => {
     if (foods.length === 0) {
       axios
-        .get('http://localhost:3005/foods')
+        // .get('http://localhost:3005/foods')
+        .get('http://127.0.0.1:8000/api/foods/')
         .then((response) => {
           setFoodsChoice(response.data)
           setLoading(false)
@@ -44,6 +45,7 @@ function AddMeal() {
       const newMeal = { date, time, foodInfo: selectedFoods }
       try {
         await axios.post('http://localhost:3005/meals', newMeal)
+        // await axios.post('http://127.0.0.1:8000/api/meals/', newMeal)
         setTime('')
         setDate('')
         setSelectedFoods([])
@@ -66,7 +68,6 @@ function AddMeal() {
       <label for="date">Date:</label>
       <input
         type="date"
-        className="form-control"
         size="50"
         placeholder="Date"
         value={date}
@@ -89,7 +90,6 @@ function AddMeal() {
         value={selectedFoods}
         onChange={handleFoodSelection}
         required
-        className="form-control"
       >
         <h2>Select Foods</h2>
         {loading ? (
