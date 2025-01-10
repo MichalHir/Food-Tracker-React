@@ -8,14 +8,23 @@ function AddFood() {
   const { foods, setFoods } = useContext(FoodContext)
   const [name, setName] = useState('')
   const [foodTypes, setFoodTypes] = useState([])
+  const [host, setHost] = useState('http://127.0.0.1:8000/')
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/foodTypes/')
+      .get(`${host}api/foodTypes/`)
       .then((response) => {
         setFoodTypes(response.data)
       })
       .catch((error) => {
         console.error('Error fetching foods TYPES:', error)
+      })
+    axios
+      .get(`${host}api/foods/`)
+      .then((response) => {
+        setFoods(response.data) // Update the foods state with the response
+      })
+      .catch((error) => {
+        console.error('Error fetching foods:', error)
       })
   }, [])
   const [selectedTypes, setSelectedTypes] = useState([])
@@ -27,7 +36,7 @@ function AddFood() {
 
       try {
         // const response = await axios.get('http://localhost:3005/foods') // Fetch existing foods
-        const response = await axios.get('http://127.0.0.1:8000/api/foods/')
+        const response = await axios.get(`${host}api/foods/`)
         setFoods(response.data)
         const existingFoods = response.data
         const foodExists = existingFoods.some(
@@ -39,7 +48,7 @@ function AddFood() {
           return // Stop execution if food exists
         }
         // await axios.post('http://localhost:3005/foods', newFood)
-        await axios.post('http://127.0.0.1:8000/api/foods/', newFood)
+        await axios.post(`${host}api/foods/`, newFood)
         setFoods([...foods, newFood])
         setName('')
         setSelectedTypes([])
@@ -92,7 +101,14 @@ function AddFood() {
       <button type="button" onClick={addNewFood}>
         Add Food
       </button>
-      <div>{foods.map((food) => food.name)}</div>
+      <br /> <br />
+      list of foods:
+      <div>
+        {foods.length > 0
+          ? foods.map((food, index) => <li key={index}>{food.name}</li>)
+          : 'No foods available.'}
+      </div>
+      <br />
       <button onClick={goToHomePage} type="button">
         back
       </button>

@@ -2,24 +2,35 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import MealContext from './MealContext'
 import { useNavigate } from 'react-router-dom'
+import FoodContext from './FoodContext'
 
 function MealsContainer() {
-  //   const [foods, setFoods] = useState([])
+  const [foods, setFoods] = useState([])
   const { meals, setMeals } = useContext(MealContext)
   const [selectedDate, setSelectedDate] = useState('') // State for the selected date
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
   const [clicked, setClicked] = useState(false)
+  const [host, setHost] = useState('http://127.0.0.1:8000/')
+  // const [foods, setFoods] = useContext(FoodContext)
 
   const navigate = useNavigate() // This must be inside the component body
 
   useEffect(() => {
     console.log('starting app')
     getMeals()
+    axios
+      .get(`${host}api/foods/`)
+      .then((response) => {
+        setFoods(response.data) // Update the foods state with the response
+      })
+      .catch((error) => {
+        console.error('Error fetching foods:', error)
+      })
   }, []) // Empty dependency array means it runs only once
   function getMeals() {
     axios
       // .get('http://localhost:3005/meals')
-      .get('http://127.0.0.1:8000/api/meals/')
+      .get(`${host}api/meals/`)
       .then((response) => {
         setMeals(response.data)
       })
@@ -54,7 +65,7 @@ function MealsContainer() {
     console.log(mealId)
     axios
       // .delete(`http://localhost:3005/meals/${mealId}`)
-      .delete(`http://127.0.0.1:8000/meals/${mealId}/`)
+      .delete(`${host}meals/${mealId}/`)
       .then((response) => {
         console.log('Meal deleted successfully:', response.data)
         // Optionally refresh the meals list or update UI here
@@ -69,6 +80,15 @@ function MealsContainer() {
       .catch((error) => {
         console.error('Error deleting meal:', error)
       })
+  }
+  const mapFoodInfoToNames = (foodInfo) => {
+    return foodInfo
+      .map((foodId) => {
+        const food = foods.find((f) => f.id === foodId)
+        return food ? food.name : null
+      })
+      .filter(Boolean)
+      .join(', ')
   }
   const goToAddPage = () => {
     navigate('/addMeal') // Use this function for navigation
@@ -104,8 +124,8 @@ function MealsContainer() {
                   <p>Time: {meal.time}</p>
                   <p>
                     Foods:{' '}
-                    {Array.isArray(meal.foodInfo)
-                      ? meal.foodInfo.join(', ')
+                    {meal.food_info.length > 0
+                      ? mapFoodInfoToNames(meal.food_info)
                       : 'No foods available'}
                   </p>
                   <button

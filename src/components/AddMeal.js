@@ -10,6 +10,7 @@ function AddMeal() {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [selectedFoods, setSelectedFoods] = useState([])
+  const [host, setHost] = useState('http://127.0.0.1:8000/')
   const navigate = useNavigate()
 
   console.log('Foods from Context:', foods)
@@ -25,7 +26,7 @@ function AddMeal() {
     if (foods.length === 0) {
       axios
         // .get('http://localhost:3005/foods')
-        .get('http://127.0.0.1:8000/api/foods/')
+        .get(`${host}api/foods/`)
         .then((response) => {
           setFoodsChoice(response.data)
           setLoading(false)
@@ -38,14 +39,14 @@ function AddMeal() {
       setFoodsChoice(foods)
       setLoading(false)
     }
-  }, [foods])
+  }, [])
 
   const addNewMeal = async () => {
     if (date && time && selectedFoods.length > 0) {
       const newMeal = { date, time, food_info: selectedFoods }
       try {
         // await axios.post('http://localhost:3005/meals', newMeal)
-        await axios.post('http://127.0.0.1:8000/api/meals/', newMeal)
+        await axios.post(`${host}api/meals/`, newMeal)
         setTime('')
         setDate('')
         setSelectedFoods([])
@@ -107,6 +108,7 @@ function AddMeal() {
       <button type="button" onClick={addNewMeal}>
         Add Meal
       </button>
+      <br /> <br />
       <button onClick={goToHomePage} type="button">
         back
       </button>
