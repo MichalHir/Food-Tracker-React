@@ -9,6 +9,8 @@ function AddFood() {
   const [name, setName] = useState('')
   const [foodTypes, setFoodTypes] = useState([])
   const [host, setHost] = useState('http://127.0.0.1:8000/')
+  const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('') // 'success' or 'error'
   useEffect(() => {
     axios
       .get(`${host}api/foodTypes/`)
@@ -26,7 +28,11 @@ function AddFood() {
       .catch((error) => {
         console.error('Error fetching foods:', error)
       })
-  }, [])
+    if (message) {
+      const timer = setTimeout(() => setMessage(''), 5000) // Clear message after 5 seconds
+      return () => clearTimeout(timer) // Cleanup timer
+    }
+  }, [message])
   const [selectedTypes, setSelectedTypes] = useState([])
   const navigate = useNavigate()
 
@@ -35,33 +41,57 @@ function AddFood() {
       const newFood = { name, typesOfFood: selectedTypes }
 
       try {
-        // const response = await axios.get('http://localhost:3005/foods') // Fetch existing foods
+        // Fetch existing foods to check for duplicates
         const response = await axios.get(`${host}api/foods/`)
-        setFoods(response.data)
         const existingFoods = response.data
+
         const foodExists = existingFoods.some(
           (food) => food.name.toLowerCase() === name.toLowerCase()
         )
+
         if (foodExists) {
-          alert(`Food with name "${name}" already exists.`)
+          // Set error message if food already exists
+          setMessage(`Food with name "${name}" already exists.`)
+          setMessageType('error')
           console.log('Duplicate food detected:', name)
           return // Stop execution if food exists
         }
-        // await axios.post('http://localhost:3005/foods', newFood)
+
+        // Add the new food to the backend
         await axios.post(`${host}api/foods/`, newFood)
-        setFoods([...foods, newFood])
+
+        // Update the local state with the new food
+        setFoods([...existingFoods, newFood])
+
+        // Set success message
+        setMessage(`Food with name "${name}" added successfully.`)
+        setMessageType('success')
+
+        // Reset form fields
         setName('')
         setSelectedTypes([])
         console.log('Food Added:', newFood)
       } catch (error) {
         console.error('Error saving food:', error)
-        alert('Failed to add food. Please try again.')
+        if (error.response) {
+          setMessage(
+            `Failed to add "${name}": ${
+              error.response.data.message || 'Unknown error occurred'
+            }.`
+          )
+        } else {
+          setMessage(`Failed to add "${name}". Please try again.`)
+        }
+        setMessageType('error')
       }
     } else {
-      alert('Please fill out all fields!')
+      // Alert for incomplete form fields
+      setMessage('Please fill out all fields!')
+      setMessageType('error')
       console.log('Please fill out all fields')
     }
   }
+
   const goToHomePage = () => {
     navigate('/')
   }
@@ -74,6 +104,7 @@ function AddFood() {
   }
   return (
     <div className="form-container">
+      {message && <div className={`message ${messageType}`}>{message}</div>}
       <h1>Add a Food</h1>
       <label for="name">Name:</label>
       <input

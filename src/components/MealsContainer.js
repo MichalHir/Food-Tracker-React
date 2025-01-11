@@ -67,7 +67,9 @@ function MealsContainer() {
         // Optionally refresh the meals list or update UI here
         // getMeals()
         // fetchMealsByDate()
-        const updatedMeals = meals.filter((meal) => meal.id !== mealId)
+        const updatedMeals = meals.filter(
+          (meal) => meal.id !== mealId && meal.user === user
+        )
         setMeals(updatedMeals)
         setFilteredMeals(
           updatedMeals.filter((meal) => meal.date === selectedDate)
