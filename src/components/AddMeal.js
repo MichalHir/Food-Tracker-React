@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import FoodContext from './FoodContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import LoginContext from './LoginContext'
 
 function AddMeal() {
   const { foods } = useContext(FoodContext)
@@ -12,6 +13,7 @@ function AddMeal() {
   const [selectedFoods, setSelectedFoods] = useState([])
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const navigate = useNavigate()
+  const [user, setUser] = useState(localStorage.getItem('username'))
 
   console.log('Foods from Context:', foods)
   const handleFoodSelection = (event) => {
@@ -43,14 +45,14 @@ function AddMeal() {
 
   const addNewMeal = async () => {
     if (date && time && selectedFoods.length > 0) {
-      const newMeal = { date, time, food_info: selectedFoods }
+      const newMeal = { user, date, time, food_info: selectedFoods }
       try {
         // await axios.post('http://localhost:3005/meals', newMeal)
         await axios.post(`${host}api/meals/`, newMeal)
         setTime('')
         setDate('')
         setSelectedFoods([])
-        console.log('Meal Added:', newMeal)
+        console.log('Meal Added:', newMeal, localStorage.getItem('username'))
       } catch (error) {
         console.error('Error saving meal:', error)
         alert('Failed to add meal. Please try again.')

@@ -3,6 +3,7 @@ import axios from 'axios'
 import MealContext from './MealContext'
 import { useNavigate } from 'react-router-dom'
 import FoodContext from './FoodContext'
+import LoginContext from './LoginContext'
 
 function MealsContainer() {
   const [foods, setFoods] = useState([])
@@ -11,6 +12,7 @@ function MealsContainer() {
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
   const [clicked, setClicked] = useState(false)
   const [host, setHost] = useState('http://127.0.0.1:8000/')
+  const [user, setUser] = useState(localStorage.getItem('username'))
   // const [foods, setFoods] = useContext(FoodContext)
 
   const navigate = useNavigate() // This must be inside the component body
@@ -26,6 +28,8 @@ function MealsContainer() {
       .catch((error) => {
         console.error('Error fetching foods:', error)
       })
+
+    console.log('user:', localStorage.getItem('username'))
   }, []) // Empty dependency array means it runs only once
   function getMeals() {
     axios
@@ -41,7 +45,10 @@ function MealsContainer() {
   //   Fetch meals by date
   function fetchMealsByDate() {
     if (selectedDate) {
-      const filtered = meals.filter((meal) => meal.date === selectedDate)
+      console.log(user)
+      const filtered = meals.filter(
+        (meal) => meal.date === selectedDate && meal.user === user
+      )
       setFilteredMeals(filtered)
       console.log(filteredMeals)
       setClicked(true)
@@ -95,13 +102,13 @@ function MealsContainer() {
   }
   return (
     <div>
-      <div class="header">
+      <div className="header">
         <h1>Meals by Date</h1>
         <p>Select a date to see all meals for that day</p>
       </div>
 
-      <div class="filter-section">
-        <label for="dateSelect">Select Date:</label>
+      <div className="filter-section">
+        <label htmlFor="dateSelect">Select Date:</label>
         <input
           type="date"
           id="dateSelect"
@@ -113,46 +120,58 @@ function MealsContainer() {
         </button>
       </div>
 
-      {clicked && <h2>Meals for {selectedDate}</h2>}
-      <div className="meals-container">
-        <div className="row">
-          {filteredMeals.length > 0 ? (
-            filteredMeals.map((meal) => (
-              <div key={meal.id} className="col-sm-6 col-md-4">
-                <div className="meal-card">
-                  <h4>{meal.date}</h4>
-                  <p>Time: {meal.time}</p>
-                  <p>
-                    Foods:{' '}
-                    {meal.food_info.length > 0
-                      ? mapFoodInfoToNames(meal.food_info)
-                      : 'No foods available'}
-                  </p>
-                  <button
-                    onClick={() =>
-                      window.confirm(
-                        'Are you sure you want to delete this meal?'
-                      ) && deleteMeal(meal.id)
-                    }
-                    type="button"
-                  >
-                    delete meal
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="col-12">
-              <p className="text-center">
-                No meals found for the selected date.
-              </p>
-            </div>
+      {/* Check for token in localStorage */}
+      {localStorage.getItem('token') ? (
+        <>
+          {/* Show meals if clicked */}
+          {clicked && (
+            <h2>
+              Meals for {selectedDate} - {user}
+            </h2>
           )}
-        </div>
-      </div>
+          <div className="meals-container">
+            <div className="row">
+              {filteredMeals.length > 0 ? (
+                filteredMeals.map((meal) => (
+                  <div key={meal.id} className="col-sm-6 col-md-4">
+                    <div className="meal-card">
+                      <h4>{meal.date}</h4>
+                      <p>Time: {meal.time}</p>
+                      <p>
+                        Foods:{' '}
+                        {meal.food_info.length > 0
+                          ? mapFoodInfoToNames(meal.food_info)
+                          : 'No foods available'}
+                      </p>
+                      <button
+                        onClick={() =>
+                          window.confirm(
+                            'Are you sure you want to delete this meal?'
+                          ) && deleteMeal(meal.id)
+                        }
+                        type="button"
+                      >
+                        Delete Meal
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-12">
+                  <p className="text-center">
+                    No meals found for the selected date.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        <p className="text-center">Please log in to view meals.</p>
+      )}
 
       <button onClick={goToAddPage} type="button" className="btn btn-primary">
-        Add meal
+        Add Meal
       </button>
     </div>
   )

@@ -11,6 +11,12 @@ function Navbar() {
     month: 'long',
     day: 'numeric',
   })
+  setLogin(localStorage.getItem('username'))
+  function logout() {
+    setLogin(null)
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+  }
   return (
     <div>
       <nav className="navbar navbar-inverse">
@@ -24,23 +30,25 @@ function Navbar() {
               <li>
                 <Link to="/">Home</Link>
               </li>
-              <li>
-                <Link to="/addMeal">Add Meal</Link>
-              </li>
-              <li>
-                <Link to="/addFood">Add Food</Link>
-              </li>
+              {localStorage.getItem('token') ? (
+                <>
+                  <li>
+                    <Link to="/addMeal">Add Meal</Link>
+                  </li>
+                  <li>
+                    <Link to="/addFood">Add Food</Link>
+                  </li>
+                </>
+              ) : null}
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              {login?.is_admin && (
+              {login ? (
                 <li>
-                  <Link to="/login">Admin</Link>
+                  <button onClick={() => logout()}>Logout</button>
                 </li>
-              )}
+              ) : null}
               <li>
-                <Link to="/login">
-                  {login ? `hello ${login.username}` : 'Your Account'}
-                </Link>
+                <Link to="/login">{login ? `hello ${login}` : 'Login'}</Link>
               </li>
               <li>
                 <a href="https://www.google.co.il">

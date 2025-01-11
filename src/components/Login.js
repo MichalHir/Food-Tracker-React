@@ -9,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const { login, setLogin } = useContext(LoginContext)
   const [message, setMessage] = useState('')
+  const [host, setHost] = useState(`http://127.0.0.1:8000/`)
   const navigate = useNavigate() // This must be inside the component body
   function doLogin() {
     console.log(`login success with username: ${userName} password:${password}`)
@@ -22,6 +23,7 @@ function Login() {
         console.log(response.data.access)
         const token = jwtDecode(response.data.access)
         localStorage.setItem('token', response.data.access)
+        localStorage.setItem('username', token.username)
         setLogin(token)
         navigate('/')
       })
