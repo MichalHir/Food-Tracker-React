@@ -47,14 +47,18 @@ function Navbar() {
                   <button onClick={() => logout()}>Logout</button>
                 </li>
               ) : null}
-              <li>
-                <Link to="/login">{login ? `hello ${login}` : 'Login'}</Link>
+              <li className="user-greeting">
+                {login ? (
+                  `hello ${login}`
+                ) : (
+                  <li>
+                    <button onClick={() => (window.location.href = '/login')}>
+                      Login
+                    </button>
+                  </li>
+                )}
               </li>
-              <li>
-                <a href="https://www.google.co.il">
-                  Today's date:{formattedDate}
-                </a>
-              </li>
+              <li className="current-date">Today's date: {formattedDate}</li>
             </ul>
           </div>
         </div>

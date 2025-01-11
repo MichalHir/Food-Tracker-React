@@ -57,17 +57,6 @@ function MealsContainer() {
       setClicked(false) // Ensure the header shows the "no selected date" message
     }
   }
-  // const deleteMeal = (mealId) => {
-  //   axios
-  //     .delete(`http://localhost:3005/meals/${mealId}`)
-  //     .then(() => {
-  //       console.log(`Meal with ID ${mealId} deleted successfully.`);
-  //       getMeals(); // Refresh meals after deletion
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error deleting meal:', error);
-  //     });
-  // };
   function deleteMeal(mealId) {
     console.log(mealId)
     axios
@@ -165,14 +154,13 @@ function MealsContainer() {
               )}
             </div>
           </div>
+
+          {/* Add Meal Button */}
+          <button onClick={goToAddPage}>Add Meal</button>
         </>
       ) : (
         <p className="text-center">Please log in to view meals.</p>
       )}
-
-      <button onClick={goToAddPage} type="button" className="btn btn-primary">
-        Add Meal
-      </button>
     </div>
   )
 }

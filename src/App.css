@@ -1,291 +1,395 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* nav bar */
-
-/* General Styling for Navbar */
-.navbar {
-  background-color: #333;
-  border: none;
-  border-radius: 0;
-  margin-bottom: 0;
+/* General Body Styles */
+body {
   font-family: Arial, sans-serif;
-}
-
-.navbar-inverse .navbar-nav {
-  display: flex; /* Flexbox for horizontal alignment */
-  flex-direction: row;
-  align-items: center;
-  padding-left: 0;
   margin: 0;
-  list-style: none; /* Remove default list styles */
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-.navbar-nav > li {
-  margin-right: 15px; /* Space between left-side buttons */
-}
-
-/* Left-side Link Styling */
-.navbar-inverse .navbar-nav > li > a {
-  color: #d5d5d5;
-  text-decoration: none;
-  padding: 10px 20px; /* Uniform button size */
-  display: inline-block; /* Ensure button-like behavior */
-  text-align: center;
-  line-height: 1.5;
-  border: 1px solid transparent; /* Invisible border for consistent sizing */
-  border-radius: 4px;
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
-}
-
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
-  color: #fff; /* Text color on hover */
-  background-color: #575757; /* Background color on hover */
-  border-color: #575757; /* Add border color on hover */
-}
-
-/* Right-side menu (Account and Date) */
-.navbar-right {
-  display: flex; /* Flexbox for horizontal alignment */
-  flex-direction: row;
-  align-items: center;
-  margin-left: auto; /* Push to the far right */
-  justify-content: flex-end; /* Ensure alignment to the right */
-}
-
-.navbar-right > li {
-  margin-left: 15px; /* Space between right-side buttons */
-}
-
-/* Right-side Button Styling */
-.navbar-inverse .navbar-nav.navbar-right > li > a {
-  color: #d5d5d5;
-  text-decoration: none;
-  padding: 10px 20px; /* Uniform button size */
-  text-align: center;
-  display: inline-block;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.navbar-inverse .navbar-nav.navbar-right > li > a:hover {
-  color: #fff;
-  background-color: #575757;
-  border-color: #575757;
-}
-
-/* Navbar Toggle Button for Small Screens */
-.navbar-toggle {
-  border-color: #ddd;
-  background-color: transparent;
-}
-
-.navbar-toggle .icon-bar {
-  background-color: #fff;
-}
-
-/* Mobile View */
-@media (max-width: 767px) {
-  .navbar-nav,
-  .navbar-right {
-    flex-direction: column; /* Stack buttons vertically on small screens */
-    align-items: flex-start; /* Align to the left */
-  }
-
-  .navbar-nav > li,
-  .navbar-right > li {
-    margin-right: 0;
-    margin-left: 0;
-    margin-bottom: 10px; /* Space between items when stacked */
-  }
-
-  .navbar-inverse .navbar-nav > li > a,
-  .navbar-inverse .navbar-nav.navbar-right > li > a {
-    width: 100%; /* Full width buttons in mobile view */
-  }
-}
-/* display of meals */
-
-.meals-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.meal-card {
-  width: 100%; /* Ensure full width inside the column */
-  padding: 1rem;
-  border: 1px solid #ddd;
+/* Form Container */
+.form-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
   border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.meal-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.form-container h1 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Labels */
+.form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Inputs */
+.form-container input[type='text'],
+.form-container input[type='date'],
+.form-container input[type='time'] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-container input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Select Dropdown */
+.form-container select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.form-container select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Buttons */
+button,
+.form-container button {
+  display: block; /* Ensure the button behaves as a block element */
+  margin: 10px auto; /* Center the button horizontally */
+  max-width: 200px; /* Limit the button width */
+  width: 100%; /* Allow responsiveness */
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #007bff;
+  transition: background-color 0.3s ease;
+}
+
+/* Button Hover Effect */
+button:hover,
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Back Button */
+button[type='button']:last-of-type {
+  background-color: #6c757d;
+}
+
+button[type='button']:last-of-type:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .form-container button {
+    font-size: 14px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .meal-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+/* Meal Cards */
+.meals-container {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 4rem;
+  gap: 20px;
 }
 
-.col-sm-4 {
-  flex: 0 0 33.333%; /* Three columns per row */
-  max-width: 33.333%;
-  box-sizing: border-box;
-  padding: 0.5rem;
-}
-
-.col-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
-  text-align: center;
-}
-
-/* forms */
-
-/* Container styling for the form */
-form-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  border: 1px solid #ddd;
+.meal-card {
+  background-color: #f1f1f1;
+  padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-}
-
-/* Form header */
-form-container h1 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  color: #333;
-}
-
-/* Form labels */
-form-container label {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #555;
-}
-
-/* Text inputs */
-form-container input[type='text'],
-form-container input[type='date'],
-form-container input[type='time'],
-form-container select {
   width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
+  max-width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.meal-card h4 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.meal-card p {
+  color: #555;
+  margin: 5px 0;
+}
+
+.meal-card button {
+  width: 100%;
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #ff6666;
+  transition: background-color 0.3s ease;
+}
+
+.meal-card button:hover {
+  background-color: #cc3333;
+}
+
+/* General Navbar Styles */
+.navbar {
+  background-color: #333;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+
+.navbar a {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  color: #f1f1f1 !important;
+  background-color: #555 !important;
+}
+
+.navbar .navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+  background-color: #555 !important;
+  color: #fff !important;
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.navbar-header a {
+  font-size: 20px;
+  color: #fff !important;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav li {
+  padding: 5px 10px;
+}
+
+.navbar-nav .navbar-right {
+  margin-left: auto;
+}
+
+.navbar-right button {
+  background-color: #ff6666;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navbar-right button:hover {
+  background-color: #cc3333;
+}
+
+.navbar-right li {
+  margin-left: 10px;
+}
+
+/* Today's Date Styling */
+.navbar-right li:last-child {
+  color: #fff;
+  font-size: 14px;
+  margin-right: 10px;
+  font-style: italic;
+}
+
+/* User Greeting */
+.user-greeting {
+  font-size: 1rem; /* Standard font size */
+  color: #00ccff; /* Light blue for a friendly tone */
+  font-weight: bold; /* Emphasize the greeting */
+  margin-right: 20px; /* Add space between elements */
+  text-align: center; /* Center alignment for better readability */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-nav li {
+    width: 100%;
+    text-align: left;
+    margin: 5px 0;
+  }
+
+  .navbar-right {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  .navbar-right button {
+    margin-bottom: 10px;
+  }
+}
+/* General Navbar Styles */
+.navbar ul {
+  list-style-type: none; /* Removes bullet points */
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+.header h1 {
+  font-size: 2.5rem;
+  color: #007bff; /* Bright blue for emphasis */
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: #555; /* Subtle gray for description */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Subheader for Selected Meals */
+h2 {
+  font-size: 1.5rem;
+  color: #333; /* Darker text for clarity */
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+/* Date Selector */
+#dateSelect {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
   background-color: #fff;
-  color: #333;
-  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
-/* Dropdown select */
-form-container select[multiple] {
-  height: auto;
-  min-height: 120px;
+/* Focus Effect on Date Selector */
+#dateSelect:focus {
+  border-color: #007bff; /* Blue border when active */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect */
+  outline: none;
 }
 
-/* Buttons */
-form-container button {
-  padding: 0.7rem 1.5rem;
+/* Filter Section */
+.filter-section {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center-align all elements */
+  justify-content: center; /* Center-align within the container */
+  width: 100%;
+  max-width: 400px; /* Optional: limit the width for better layout */
+  margin: 20px auto; /* Center the section horizontally and add spacing */
+  padding: 20px;
+  background-color: #fff; /* Optional: add a background for better visibility */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for aesthetics */
+}
+
+/* Centered Label */
+.filter-section label {
   font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Centered Button */
+.filter-section button {
+  width: 100%;
+  max-width: 200px; /* Optional: limit button width */
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 1rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px; /* Add spacing above the button */
 }
 
-form-container button[type='button']:first-of-type {
-  background-color: #4caf50;
-  color: white;
+.filter-section button:hover {
+  background-color: #0056b3;
 }
 
-form-container button[type='button']:first-of-type:hover {
-  background-color: #45a049;
-}
-
-form-container button[type='button']:last-of-type {
-  background-color: #f44336;
-  color: white;
-}
-
-form-container button[type='button']:last-of-type:hover {
-  background-color: #d32f2f;
-}
-
-/* Add spacing between buttons */
-form-container button + button {
-  margin-left: 0.5rem;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  form-container {
-    padding: 1rem;
-  }
-
-  form-container input[type='text'],
-  form-container input[type='date'],
-  form-container input[type='time'],
-  form-container select {
-    font-size: 0.9rem;
-    padding: 0.7rem;
-  }
-
-  form-container button {
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
-  }
+.filter-section button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
