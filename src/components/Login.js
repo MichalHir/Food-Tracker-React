@@ -11,8 +11,15 @@ function Login() {
   const [message, setMessage] = useState('')
   const [host, setHost] = useState(`http://127.0.0.1:8000/`)
   const navigate = useNavigate() // This must be inside the component body
+  const [messageType, setMessageType] = useState('') // 'success' or 'error'
+
   function doLogin() {
     console.log(`login success with username: ${userName} password:${password}`)
+    if (!password || !userName) {
+      setMessage('Please add both username and password')
+      setMessageType('error')
+      return
+    }
     const loginData = {
       username: userName,
       password: password,
@@ -29,20 +36,12 @@ function Login() {
       })
       .catch((error) => {
         console.log(error)
-        setMessage('Login Failed please try again')
+        setMessage('Login Failed - invalid username or password')
       })
-    // if (password && userName) {
-    //    navigate('/')
-    //    Optionally update the context or perform an API call here
-    // } else {
-    //   alert('Please enter both email and password!')
-    //   console.log('Please enter both email and password')
-    //   navigate('/')
-    // }
   }
   return (
     <div className="login-container">
-      <div>{message}</div>
+      {message && <div className={`message ${messageType}`}>{message}</div>}
       <h1>Login</h1>
       UserName:
       <input
