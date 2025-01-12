@@ -11,6 +11,8 @@ function AddFood() {
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('') // 'success' or 'error'
+  // const [filteredFoods, setFilteredFoods] = useState([])
+
   useEffect(() => {
     axios
       .get(`${host}api/foodTypes/`)
@@ -39,7 +41,6 @@ function AddFood() {
   const addNewFood = async () => {
     if (name && selectedTypes.length > 0) {
       const newFood = { name, typesOfFood: selectedTypes }
-
       try {
         // Fetch existing foods to check for duplicates
         const response = await axios.get(`${host}api/foods/`)
@@ -48,7 +49,6 @@ function AddFood() {
         const foodExists = existingFoods.some(
           (food) => food.name.toLowerCase() === name.toLowerCase()
         )
-
         if (foodExists) {
           // Set error message if food already exists
           setMessage(`Food with name "${name}" already exists.`)
@@ -56,17 +56,14 @@ function AddFood() {
           console.log('Duplicate food detected:', name)
           return // Stop execution if food exists
         }
-
         // Add the new food to the backend
         await axios.post(`${host}api/foods/`, newFood)
 
         // Update the local state with the new food
         setFoods([...existingFoods, newFood])
-
         // Set success message
         setMessage(`Food with name "${name}" added successfully.`)
         setMessageType('success')
-
         // Reset form fields
         setName('')
         setSelectedTypes([])
@@ -92,15 +89,20 @@ function AddFood() {
     }
   }
 
-  const goToHomePage = () => {
-    navigate('/')
-  }
   const handleTypeSelection = (event) => {
     const selectedOptions = Array.from(
       event.target.selectedOptions,
       (option) => option.value
     )
     setSelectedTypes(selectedOptions)
+  }
+
+  const filteredFoods = foods.filter((food) =>
+    food.name.toLowerCase().includes(name.toLowerCase())
+  )
+
+  const goToHomePage = () => {
+    navigate('/')
   }
   return (
     <div className="form-container">
@@ -129,16 +131,21 @@ function AddFood() {
           </option>
         ))}
       </select>
+      <label htmlFor="foods">Food list:</label>
+      <select id="foods" name="foods" required>
+        <option disabled>Select a food...</option>
+        {filteredFoods.length > 0 ? (
+          filteredFoods.map((food) => (
+            <option key={foods.id}>{food.name}</option>
+          ))
+        ) : (
+          <option disabled>No foods found</option>
+        )}
+      </select>
       <button type="button" onClick={addNewFood}>
         Add Food
       </button>
       <br /> <br />
-      list of foods:
-      <div>
-        {foods.length > 0
-          ? foods.map((food, index) => <li key={index}>{food.name}</li>)
-          : 'No foods available.'}
-      </div>
       <br />
       <button onClick={goToHomePage} type="button">
         back

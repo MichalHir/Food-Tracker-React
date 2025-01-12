@@ -101,24 +101,6 @@ function AddMeal() {
     }
   }
 
-  // const mapFoodInfoToNames = (selectedFoods) => {
-  //   return selectedFoods
-  //     .map((foodId) => {
-  //       const food = foods.find((f) => f.id === foodId)
-  //       return food ? food.name : null
-  //     })
-  //     .filter(Boolean)
-  //     .join(', ')
-  // }
-
-  // const handleFoodSelection = (event) => {
-  //   const selectedOptions = Array.from(
-  //     event.target.selectedOptions,
-  //     (option) => option.value
-  //   )
-  //   setSelectedFoods(selectedOptions, addedFood)
-  // }
-
   const goToHomePage = () => {
     navigate('/')
   }
