@@ -33,7 +33,7 @@ function SearchFood() {
   const navigate = useNavigate()
 
   const filteredFoods = foods.filter((food) => {
-    const matchesName = food.name.toLowerCase().includes(name.toLowerCase())
+    const matchesName = food.name.toLowerCase().startsWith(name.toLowerCase())
     const matchesType =
       selectedTypes.length === 0 || // If no type is selected, include all foods
       food.typesOfFood.some((typeId) => {

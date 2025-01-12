@@ -49,7 +49,7 @@ function AddMeal() {
 
   // Filter foods based on search query
   const filteredFoods = foodsChoice.filter((food) =>
-    food.name.toLowerCase().includes(searchQuery.toLowerCase())
+    food.name.toLowerCase().startsWith(searchQuery.toLowerCase())
   )
 
   const addNewMeal = async () => {
