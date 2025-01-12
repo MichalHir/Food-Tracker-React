@@ -11,7 +11,6 @@ function AddFood() {
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('') // 'success' or 'error'
-  // const [filteredFoods, setFilteredFoods] = useState([])
 
   useEffect(() => {
     axios
@@ -106,7 +105,6 @@ function AddFood() {
   }
   return (
     <div className="form-container">
-      {message && <div className={`message ${messageType}`}>{message}</div>}
       <h1>Add a Food</h1>
       <label for="name">Name:</label>
       <input
@@ -131,17 +129,17 @@ function AddFood() {
           </option>
         ))}
       </select>
-      <label htmlFor="foods">Food list:</label>
-      <select id="foods" name="foods" required>
-        <option disabled>Select a food...</option>
+      <label htmlFor="foods">Food List:</label>
+      <select id="foods" name="foods" multiple value={name}>
         {filteredFoods.length > 0 ? (
-          filteredFoods.map((food) => (
-            <option key={foods.id}>{food.name}</option>
+          filteredFoods.map((food, index) => (
+            <option key={index}>{food.name}</option>
           ))
         ) : (
           <option disabled>No foods found</option>
         )}
       </select>
+      {message && <div className={`message ${messageType}`}>{message}</div>}
       <button type="button" onClick={addNewFood}>
         Add Food
       </button>
