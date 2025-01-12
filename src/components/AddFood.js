@@ -11,7 +11,6 @@ function AddFood() {
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('') // 'success' or 'error'
-
   useEffect(() => {
     axios
       .get(`${host}api/foodTypes/`)
@@ -105,49 +104,55 @@ function AddFood() {
   }
   return (
     <div className="form-container">
-      <h1>Add a Food</h1>
-      <label for="name">Name:</label>
-      <input
-        type="text"
-        placeholder="Enter food name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <label for="type">Type:</label>
-      <select
-        id="foods"
-        name="foods"
-        multiple
-        value={selectedTypes}
-        onChange={handleTypeSelection}
-        required
-      >
-        {foodTypes.map((foodTypes, index) => (
-          <option key={index} value={foodTypes.id}>
-            {foodTypes.type}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="foods">Food List:</label>
-      <select id="foods" name="foods" multiple value={name}>
-        {filteredFoods.length > 0 ? (
-          filteredFoods.map((food, index) => (
-            <option key={index}>{food.name}</option>
-          ))
-        ) : (
-          <option disabled>No foods found</option>
-        )}
-      </select>
-      {message && <div className={`message ${messageType}`}>{message}</div>}
-      <button type="button" onClick={addNewFood}>
-        Add Food
-      </button>
-      <br /> <br />
-      <br />
-      <button onClick={goToHomePage} type="button">
-        back
-      </button>
+      {localStorage.getItem('token') ? (
+        <>
+          <h1>Add a Food</h1>
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            placeholder="Enter food name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <label for="type">Type:</label>
+          <select
+            id="foods"
+            name="foods"
+            multiple
+            value={selectedTypes}
+            onChange={handleTypeSelection}
+            required
+          >
+            {foodTypes.map((foodTypes, index) => (
+              <option key={index} value={foodTypes.id}>
+                {foodTypes.type}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="foods">Food List:</label>
+          <select id="foods" name="foods" multiple value={name}>
+            {filteredFoods.length > 0 ? (
+              filteredFoods.map((food, index) => (
+                <option key={index}>{food.name}</option>
+              ))
+            ) : (
+              <option disabled>No foods found</option>
+            )}
+          </select>
+          {message && <div className={`message ${messageType}`}>{message}</div>}
+          <button type="button" onClick={addNewFood}>
+            Add Food
+          </button>
+          <br /> <br />
+          <br />
+          <button onClick={goToHomePage} type="button">
+            back
+          </button>
+        </>
+      ) : (
+        <p className="text-center">Please log in to view meals.</p>
+      )}
     </div>
   )
 }

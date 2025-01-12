@@ -93,79 +93,85 @@ function AddMeal() {
   }
   return (
     <div className="form-container">
-      <h1>Add a Meal</h1>
-      <label for="date">Date:</label>
-      <input
-        type="date"
-        size="50"
-        placeholder="Date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <label for="time">Time:</label>
-      <input
-        type="time"
-        id="time"
-        name="time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        required
-      />
-      <label htmlFor="foods">Search and Select Foods:</label>
-      <input
-        type="text"
-        placeholder="Search foods..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
-        className="search-input"
-      />
-      <select
-        id="foods"
-        name="foods"
-        multiple
-        value={addedFood}
-        onChange={(e) => setAddedFood(e.target.value)}
-        required
-      >
-        <h2>Select a food to add</h2>
-        {loading ? (
-          <option disabled>Loading foods...</option>
-        ) : filteredFoods.length > 0 ? (
-          filteredFoods.map((food) => (
-            <option key={food.id} value={food.id}>
-              {food.name}
-            </option>
-          ))
-        ) : (
-          <option disabled>No foods found</option>
-        )}
-      </select>
-      {message && <div className={`message ${messageType}`}>{message}</div>}
-      <button type="button" onClick={addFoodToSelectedFoods}>
-        Add Selected Food
-      </button>
-      <p>The foods you have selected:</p>
-      <ul>
-        {selectedFoods.length > 0 ? (
-          selectedFoods.map((foodId) => {
-            const food = foods.find((f) => f.id === parseInt(foodId)) // Find food by ID
-            return (
-              <li key={foodId}>
-                {food ? food.name : `Food with ID ${foodId} not found`}
-              </li>
-            )
-          })
-        ) : (
-          <li>No foods available</li>
-        )}
-      </ul>
-      <button type="button" onClick={addNewMeal}>
-        Add Meal
-      </button>
-      <br /> <br />
-      <button onClick={goToHomePage} type="button">
-        back
-      </button>
+      {localStorage.getItem('token') ? (
+        <>
+          <h1>Add a Meal</h1>
+          <label for="date">Date:</label>
+          <input
+            type="date"
+            size="50"
+            placeholder="Date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <label for="time">Time:</label>
+          <input
+            type="time"
+            id="time"
+            name="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+          />
+          <label htmlFor="foods">Search and Select Foods:</label>
+          <input
+            type="text"
+            placeholder="Search foods..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
+            className="search-input"
+          />
+          <select
+            id="foods"
+            name="foods"
+            multiple
+            value={addedFood}
+            onChange={(e) => setAddedFood(e.target.value)}
+            required
+          >
+            <h2>Select a food to add</h2>
+            {loading ? (
+              <option disabled>Loading foods...</option>
+            ) : filteredFoods.length > 0 ? (
+              filteredFoods.map((food) => (
+                <option key={food.id} value={food.id}>
+                  {food.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>No foods found</option>
+            )}
+          </select>
+          {message && <div className={`message ${messageType}`}>{message}</div>}
+          <button type="button" onClick={addFoodToSelectedFoods}>
+            Add Selected Food
+          </button>
+          <p>The foods you have selected:</p>
+          <ul>
+            {selectedFoods.length > 0 ? (
+              selectedFoods.map((foodId) => {
+                const food = foods.find((f) => f.id === parseInt(foodId)) // Find food by ID
+                return (
+                  <li key={foodId}>
+                    {food ? food.name : `Food with ID ${foodId} not found`}
+                  </li>
+                )
+              })
+            ) : (
+              <li>No foods available</li>
+            )}
+          </ul>
+          <button type="button" onClick={addNewMeal}>
+            Add Meal
+          </button>
+          <br /> <br />
+          <button onClick={goToHomePage} type="button">
+            back
+          </button>
+        </>
+      ) : (
+        <p className="text-center">Please log in to view meals.</p>
+      )}
     </div>
   )
 }

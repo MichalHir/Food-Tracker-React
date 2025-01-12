@@ -18,7 +18,7 @@ function Login() {
       password: password,
     }
     axios
-      .post('http://127.0.0.1:8000/login/', loginData)
+      .post(`${host}login/`, loginData)
       .then((response) => {
         console.log(response.data.access)
         const token = jwtDecode(response.data.access)
@@ -41,7 +41,7 @@ function Login() {
     // }
   }
   return (
-    <div>
+    <div className="login-container">
       <div>{message}</div>
       <h1>Login</h1>
       UserName:

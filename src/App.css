@@ -49,20 +49,45 @@ body {
   outline: none;
 }
 
-/* Select Dropdown */
-.form-container select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  background-color: #fff;
+/* Smaller and more compact select dropdown */
+select {
+  width: 100%; /* Full-width dropdown */
+  padding: 6px; /* Smaller padding */
+  font-size: 14px; /* Smaller font size */
+  border: 1px solid #ccc; /* Border color and style */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: #f9f9f9; /* Background color */
+  appearance: none; /* Remove default arrow in some browsers */
+  outline: none; /* Remove focus outline */
+  cursor: pointer; /* Pointer cursor on hover */
+  box-sizing: border-box; /* Include padding and border in width */
 }
 
-.form-container select:focus {
-  border-color: #007bff;
-  outline: none;
+/* Style for the options inside the dropdown */
+select option {
+  padding: 5px; /* Smaller padding inside each option */
+  font-size: 14px; /* Smaller font size for options */
+  background-color: #fff; /* Background color */
+  color: #333; /* Text color */
+}
+
+/* Hover effect for options (for some browsers) */
+select option:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+  color: #000; /* Text color on hover */
+}
+
+/* Styles for when the select element is focused */
+select:focus {
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.3); /* Subtle glow effect */
+}
+
+/* Disabled select styling */
+select:disabled {
+  background-color: #e9ecef; /* Gray background */
+  color: #6c757d; /* Gray text */
+  cursor: not-allowed; /* Not-allowed cursor */
 }
 
 /* Buttons */
@@ -465,4 +490,64 @@ h2 {
 
 .search-input {
   margin-bottom: 10px;
+}
+
+/* login */
+/* Centered and styled container for the login form */
+.login-container {
+  max-width: 400px; /* Set a max width for the form */
+  margin: 50px auto; /* Center the form horizontally and add top margin */
+  padding: 20px; /* Add padding inside the container */
+  background-color: #fff; /* White background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Styling for the form title */
+.login-container h1 {
+  font-size: 24px; /* Larger font size */
+  text-align: center; /* Center the title */
+  color: #007bff; /* Bright blue color */
+  margin-bottom: 20px; /* Add spacing below the title */
+}
+
+/* Styling for text and password input fields */
+.login-container input[type='text'],
+.login-container input[type='password'] {
+  width: 100%; /* Full-width inputs */
+  padding: 10px; /* Add padding inside the inputs */
+  margin-bottom: 15px; /* Add spacing between inputs */
+  font-size: 14px; /* Font size for better readability */
+  border: 1px solid #ccc; /* Subtle border */
+  border-radius: 4px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding and border in width */
+}
+
+/* Add focus styles for inputs */
+.login-container input[type='text']:focus,
+.login-container input[type='password']:focus {
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Glow effect on focus */
+  outline: none; /* Remove default focus outline */
+}
+
+.login-container input:hover {
+  border-color: #0056b3; /* Slightly darker blue border */
+}
+.login-container input::placeholder {
+  color: #aaa; /* Light gray for placeholder text */
+  font-style: italic; /* Italic placeholder text */
+}
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%; /* Reduce width for smaller screens */
+  }
+
+  .login-container h1 {
+    font-size: 20px; /* Smaller title size */
+  }
+
+  .login-container button {
+    font-size: 14px; /* Smaller button text */
+  }
 }

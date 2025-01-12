@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import MealContext from './MealContext'
 import { useNavigate } from 'react-router-dom'
-import FoodContext from './FoodContext'
-import LoginContext from './LoginContext'
 
 function MealsContainer() {
   const [foods, setFoods] = useState([])
