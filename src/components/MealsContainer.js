@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom'
 function MealsContainer() {
   const [foods, setFoods] = useState([])
   const { meals, setMeals } = useContext(MealContext)
-  const [selectedDate, setSelectedDate] = useState('') // State for the selected date
+  // const [selectedDate, setSelectedDate] = useState('') // State for the selected date
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0] // Default to today's date
+  )
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
   const [clicked, setClicked] = useState(false)
   const [host, setHost] = useState('http://127.0.0.1:8000/')
@@ -28,7 +31,8 @@ function MealsContainer() {
       })
 
     console.log('user:', localStorage.getItem('username'))
-  }, []) // Empty dependency array means it runs only once
+    fetchMealsByDate()
+  }, [selectedDate]) // Empty dependency array means it runs only once
   function getMeals() {
     axios
       // .get('http://localhost:3005/meals')
@@ -90,28 +94,29 @@ function MealsContainer() {
     navigate('/addMeal') // Use this function for navigation
   }
   return (
-    <div>
-      <div className="header">
-        <h1>Meals by Date</h1>
-        <p>Select a date to see all meals for that day</p>
-      </div>
-
-      <div className="filter-section">
-        <label htmlFor="dateSelect">Select Date:</label>
-        <input
-          type="date"
-          id="dateSelect"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
-        <button onClick={fetchMealsByDate} disabled={!selectedDate}>
-          Show Meals
-        </button>
-      </div>
-
-      {/* Check for token in localStorage */}
+    <div className="form-container">
       {localStorage.getItem('token') ? (
         <>
+          <div className="header">
+            <h1>Meals by Date</h1>
+            <p>Select a date to see all meals for that day</p>
+          </div>
+
+          <div className="filter-section">
+            <label htmlFor="dateSelect">Select Date:</label>
+            <input
+              type="date"
+              id="dateSelect"
+              placeholder="Date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+            <button onClick={fetchMealsByDate} disabled={!selectedDate}>
+              Show Meals
+            </button>
+          </div>
+
+          {/* Check for token in localStorage */}
           {/* Show meals if clicked */}
           {clicked && (
             <h2>

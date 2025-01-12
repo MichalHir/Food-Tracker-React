@@ -7,8 +7,12 @@ function AddMeal() {
   const { foods, setFoods } = useContext(FoodContext)
   const [foodsChoice, setFoodsChoice] = useState([])
   const [loading, setLoading] = useState(true)
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+  // const [date, setDate] = useState('')
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD
+  // const [time, setTime] = useState('')
+  const [time, setTime] = useState(
+    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  ) // HH:MM
   const [selectedFoods, setSelectedFoods] = useState([])
   const [searchQuery, setSearchQuery] = useState('') // Search query state
   const [host, setHost] = useState('http://127.0.0.1:8000/')
@@ -53,8 +57,15 @@ function AddMeal() {
       const newMeal = { user, date, time, food_info: selectedFoods }
       try {
         await axios.post(`${host}api/meals/`, newMeal)
-        setTime('')
-        setDate('')
+        // setTime('')
+        // setDate('')
+        setTime(
+          new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        ) // Reset to current time
+        setDate(new Date().toISOString().split('T')[0]) // Reset to current date
         setSelectedFoods([])
         setMessage('Meal added successfully!')
         setMessageType('success')
@@ -71,7 +82,7 @@ function AddMeal() {
   }
   const addFoodToSelectedFoods = () => {
     if (addedFood && addedFood !== '' && !selectedFoods.includes(addedFood)) {
-      const foodId = parseInt(addedFood) // Ensure the ID matches the type in foods
+      const foodId = parseInt(addedFood, 10) // Ensure the ID matches the type in foods
       const food = foods.find((f) => f.id === foodId) // Lookup food by ID
       const foodName = food ? food.name : 'Unknown food'
       setSelectedFoods([...selectedFoods, addedFood])
@@ -133,7 +144,7 @@ function AddMeal() {
               <option disabled>Loading foods...</option>
             ) : filteredFoods.length > 0 ? (
               filteredFoods.map((food) => (
-                <option key={food.id} value={food.id}>
+                <option key={food.id} value={food.id.toString()}>
                   {food.name}
                 </option>
               ))

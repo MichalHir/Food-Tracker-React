@@ -38,6 +38,9 @@ function Navbar() {
                   <li>
                     <Link to="/addFood">Add Food</Link>
                   </li>
+                  <li>
+                    <Link to="/searchFood">Search Food</Link>
+                  </li>
                 </>
               ) : null}
             </ul>

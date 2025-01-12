@@ -115,7 +115,7 @@ function AddFood() {
             onChange={(e) => setName(e.target.value)}
             required
           />
-          <label for="type">Type:</label>
+          <label for="type">Select types:</label>
           <select
             id="foods"
             name="foods"
@@ -129,16 +129,6 @@ function AddFood() {
                 {foodTypes.type}
               </option>
             ))}
-          </select>
-          <label htmlFor="foods">Food List:</label>
-          <select id="foods" name="foods" multiple value={name}>
-            {filteredFoods.length > 0 ? (
-              filteredFoods.map((food, index) => (
-                <option key={index}>{food.name}</option>
-              ))
-            ) : (
-              <option disabled>No foods found</option>
-            )}
           </select>
           {message && <div className={`message ${messageType}`}>{message}</div>}
           <button type="button" onClick={addNewFood}>

@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/NavBar'
 import AddMeal from './components/AddMeal'
 import AddFood from './components/AddFood'
+import SearchFood from './components/SearchFood'
 import Login from './components/Login'
 import FoodContext from './components/FoodContext'
 import LoginContext from './components/LoginContext'
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/" element={<MealsContainer />} />
                 <Route path="/addMeal" element={<AddMeal />} />
                 <Route path="/addFOOD" element={<AddFood />} />
+                <Route path="/searchFOOD" element={<SearchFood />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/about"
