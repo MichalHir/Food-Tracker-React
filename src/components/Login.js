@@ -58,9 +58,7 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="button" onClick={doLogin}>
-        Login
-      </button>
+      <button onClick={doLogin}>Login</button>
     </div>
   )
 }

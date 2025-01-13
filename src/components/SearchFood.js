@@ -91,21 +91,27 @@ function SearchFood() {
             ))}
           </select>
           <br /> <br />
-          <label htmlFor="foods">Food List:</label>
-          <select id="foods" name="foods" multiple value={name}>
-            {filteredFoods.length > 0 ? (
-              filteredFoods.map((food) => (
-                <option key={food.id}>
-                  {food.name} -{' '}
-                  {food.typesOfFood.length > 0
-                    ? mapFoodTypesInfoToNames(food.typesOfFood)
-                    : 'No types available'}
-                </option>
-              ))
-            ) : (
-              <option disabled>No foods found</option>
-            )}
-          </select>
+          {name === '' && selectedTypes.length === 0 ? (
+            <p className="food-item">Please select a food name or type.</p>
+          ) : (
+            <>
+              <label htmlFor="foods">Food List:</label>
+              <select id="foods" name="foods" multiple>
+                {filteredFoods.length > 0 ? (
+                  filteredFoods.map((food) => (
+                    <option key={food.id}>
+                      {food.name} -{' '}
+                      {food.typesOfFood.length > 0
+                        ? mapFoodTypesInfoToNames(food.typesOfFood)
+                        : 'No types available'}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No foods found</option>
+                )}
+              </select>
+            </>
+          )}
           <br /> <br />
           <br />
           <button onClick={goToHomePage} type="button">

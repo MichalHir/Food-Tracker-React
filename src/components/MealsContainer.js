@@ -168,8 +168,10 @@ function MealsContainer() {
                 ))
               ) : (
                 <div className="col-12">
-                  <p className="text-center">
-                    No meals found for the selected date.
+                  <p className="food-item">
+                    {selectedDate
+                      ? 'No meals found for the selected date.'
+                      : 'Please select a date.'}
                   </p>
                 </div>
               )}

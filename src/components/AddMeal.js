@@ -69,7 +69,8 @@ function AddMeal() {
         setMessageType('error')
       }
     } else {
-      alert('Please fill out all fields!')
+      setMessage('Please fill out all fields!')
+      setMessageType('error')
     }
   }
   const addFoodToSelectedFoods = () => {
@@ -123,27 +124,31 @@ function AddMeal() {
             onChange={(e) => setSearchQuery(e.target.value)} // Update search query state
             className="search-input"
           />
-          <select
-            id="foods"
-            name="foods"
-            multiple
-            value={addedFood}
-            onChange={(e) => setAddedFood(e.target.value)}
-            required
-          >
-            <h2>Select a food to add</h2>
-            {loading ? (
-              <option disabled>Loading foods...</option>
-            ) : filteredFoods.length > 0 ? (
-              filteredFoods.map((food) => (
-                <option key={food.id} value={food.id.toString()}>
-                  {food.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>No foods found</option>
-            )}
-          </select>
+          {searchQuery ? (
+            <>
+              <select
+                id="foods"
+                name="foods"
+                multiple
+                value={addedFood}
+                onChange={(e) => setAddedFood(e.target.value)}
+                required
+              >
+                <h2>Select a food to add</h2>
+                {loading ? (
+                  <option disabled>Loading foods...</option>
+                ) : filteredFoods.length > 0 ? (
+                  filteredFoods.map((food) => (
+                    <option key={food.id} value={food.id.toString()}>
+                      {food.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No foods found</option>
+                )}
+              </select>
+            </>
+          ) : null}
           {message && <div className={`message ${messageType}`}>{message}</div>}
           <button type="button" onClick={addFoodToSelectedFoods}>
             Add Selected Food
