@@ -4,7 +4,6 @@ import LoginContext from './LoginContext'
 
 function Navbar() {
   const { login, setLogin } = useContext(LoginContext)
-  // Get today's date
   const today = new Date()
   const formattedDate = today.toLocaleDateString('en-US', {
     year: 'numeric',

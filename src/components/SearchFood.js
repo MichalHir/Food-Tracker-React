@@ -9,7 +9,6 @@ function SearchFood() {
   const [name, setName] = useState('')
   const [foodTypes, setFoodTypes] = useState([])
   const [selectedTypes, setSelectedTypes] = useState([]) // Array for multiple types
-
   const [host, setHost] = useState('http://127.0.0.1:8000/')
 
   useEffect(() => {
@@ -24,7 +23,7 @@ function SearchFood() {
     axios
       .get(`${host}api/foods/`)
       .then((response) => {
-        setFoods(response.data) // Update the foods state with the response
+        setFoods(response.data)
       })
       .catch((error) => {
         console.error('Error fetching foods:', error)
@@ -114,7 +113,7 @@ function SearchFood() {
           </button>
         </>
       ) : (
-        <p className="text-center">Please log in to view meals.</p>
+        <p className="text-center">Please log in to use the food tracker.</p>
       )}
     </div>
   )

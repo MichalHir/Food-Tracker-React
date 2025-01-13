@@ -23,7 +23,7 @@ function AddFood() {
     axios
       .get(`${host}api/foods/`)
       .then((response) => {
-        setFoods(response.data) // Update the foods state with the response
+        setFoods(response.data) 
       })
       .catch((error) => {
         console.error('Error fetching foods:', error)
@@ -40,7 +40,6 @@ function AddFood() {
     if (name && selectedTypes.length > 0) {
       const newFood = { name, typesOfFood: selectedTypes }
       try {
-        // Fetch existing foods to check for duplicates
         const response = await axios.get(`${host}api/foods/`)
         const existingFoods = response.data
 
@@ -48,24 +47,17 @@ function AddFood() {
           (food) => food.name.toLowerCase() === name.toLowerCase()
         )
         if (foodExists) {
-          // Set error message if food already exists
           setMessage(`Food with name "${name}" already exists.`)
           setMessageType('error')
           console.log('Duplicate food detected:', name)
-          return // Stop execution if food exists
+          return 
         }
-        // Add the new food to the backend
         await axios.post(`${host}api/foods/`, newFood)
-
-        // Update the local state with the new food
         setFoods([...existingFoods, newFood])
-        // Set success message
         setMessage(`Food with name "${name}" added successfully.`)
         setMessageType('success')
-        // Reset form fields
         setName('')
         setSelectedTypes([])
-        console.log('Food Added:', newFood)
       } catch (error) {
         console.error('Error saving food:', error)
         if (error.response) {
@@ -80,10 +72,8 @@ function AddFood() {
         setMessageType('error')
       }
     } else {
-      // Alert for incomplete form fields
       setMessage('Please fill out all fields!')
       setMessageType('error')
-      console.log('Please fill out all fields')
     }
   }
 
@@ -95,10 +85,6 @@ function AddFood() {
     setSelectedTypes(selectedOptions)
   }
 
-  const filteredFoods = foods.filter((food) =>
-    food.name.toLowerCase().includes(name.toLowerCase())
-  )
-
   const goToHomePage = () => {
     navigate('/')
   }
@@ -107,7 +93,7 @@ function AddFood() {
       {localStorage.getItem('token') ? (
         <>
           <h1>Add a Food</h1>
-          <label for="name">Name:</label>
+          <label for="name">Enter the food name:</label>
           <input
             type="text"
             placeholder="Enter food name"
@@ -115,21 +101,25 @@ function AddFood() {
             onChange={(e) => setName(e.target.value)}
             required
           />
-          <label for="type">Select types:</label>
-          <select
-            id="foods"
-            name="foods"
-            multiple
-            value={selectedTypes}
-            onChange={handleTypeSelection}
-            required
-          >
-            {foodTypes.map((foodTypes, index) => (
-              <option key={index} value={foodTypes.id}>
-                {foodTypes.type}
-              </option>
-            ))}
-          </select>
+          {name.length > 0 ? (
+            <>
+              <label for="type">Select the food type/s:</label>
+              <select
+                id="foods"
+                name="foods"
+                multiple
+                value={selectedTypes}
+                onChange={handleTypeSelection}
+                required
+              >
+                {foodTypes.map((foodTypes, index) => (
+                  <option key={index} value={foodTypes.id}>
+                    {foodTypes.type}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : null}
           {message && <div className={`message ${messageType}`}>{message}</div>}
           <button type="button" onClick={addNewFood}>
             Add Food
@@ -141,7 +131,7 @@ function AddFood() {
           </button>
         </>
       ) : (
-        <p className="text-center">Please log in to view meals.</p>
+        <p className="text-center">Please log in to use the food tracker.</p>
       )}
     </div>
   )

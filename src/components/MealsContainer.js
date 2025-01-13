@@ -9,11 +9,7 @@ function MealsContainer() {
   const { foods, setFoods } = useContext(FoodContext)
   const { meals, setMeals } = useContext(MealContext)
   const [selectedDate, setSelectedDate] = useState('') // State for the selected date
-  // const [selectedDate, setSelectedDate] = useState(
-  //   new Date().toISOString().split('T')[0] // Default to today's date
-  // )
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
-  const [clicked, setClicked] = useState(false)
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const [user, setUser] = useState(localStorage.getItem('username'))
   // const [foods, setFoods] = useContext(FoodContext)
@@ -34,14 +30,14 @@ function MealsContainer() {
     axios
       .get(`${host}api/foods/`)
       .then((response) => {
-        setFoods(response.data) // Update the foods state with the response
+        setFoods(response.data)
       })
       .catch((error) => {
         console.error('Error fetching foods:', error)
       })
     console.log('user:', localStorage.getItem('username'))
     fetchMealsByDate()
-  }, [selectedDate]) // Empty dependency array means it runs only once
+  }, [selectedDate])
   function getMeals() {
     axios
       .get(`${host}api/meals/`)
@@ -52,19 +48,15 @@ function MealsContainer() {
         console.error('Error fetching meals:', error)
       })
   }
-  //   Fetch meals by date
+
   function fetchMealsByDate() {
     if (selectedDate) {
-      console.log(user)
       const filtered = meals.filter(
         (meal) => meal.date === selectedDate && meal.user === user
       )
       setFilteredMeals(filtered)
-      console.log(filteredMeals)
-      setClicked(true)
     } else {
-      setFilteredMeals([]) // Clear filtered meals if no date is selected
-      setClicked(false) // Ensure the header shows the "no selected date" message
+      setFilteredMeals([])
     }
   }
   function setTodayDate() {
@@ -75,7 +67,6 @@ function MealsContainer() {
     axios
       .delete(`${host}meals/${mealId}/`)
       .then((response) => {
-        console.log('Meal deleted successfully:', response.data)
         const updatedMeals = meals.filter(
           (meal) => meal.id !== mealId && meal.user === user
         )
@@ -88,19 +79,11 @@ function MealsContainer() {
         console.error('Error deleting meal:', error)
       })
   }
-  // const mapFoodInfoToNames = (foodInfo) => {
-  //   return foodInfo
-  //     .map((foodId) => {
-  //       const food = foods.find((f) => f.id === foodId)
-  //       return food ? food.name : null
-  //     })
-  //     .filter(Boolean)
-  //     .join(', ')
-  // }
+
   const mapFoodInfoToNamesAndTypes = (foodInfo) => {
     if (!Array.isArray(foodInfo)) {
       console.warn('Invalid foodInfo:', foodInfo)
-      return [] // Ensure foodInfo is an array
+      return []
     }
     return foodInfo
       .map((foodId) => {
@@ -119,16 +102,17 @@ function MealsContainer() {
         return null
       })
       .filter(Boolean)
-    // .join(', ')
   }
+
   const goToAddPage = () => {
-    navigate('/addMeal') // Use this function for navigation
+    navigate('/addMeal')
   }
   return (
     <div className="form-container">
       {localStorage.getItem('token') ? (
         <>
           <div className="header">
+            <h1>Welcome to your food tracker</h1>
             <h1>Meals by Date</h1>
             <p>Select a date to see all meals for that day</p>
           </div>
@@ -144,14 +128,9 @@ function MealsContainer() {
             />
             <button onClick={setTodayDate}>Show today's meals</button>
           </div>
-
-          {/* Check for token in localStorage */}
-          {/* Show meals if clicked */}
-          {clicked && (
-            <h2>
-              Meals for {selectedDate} - {user}
-            </h2>
-          )}
+          <h2>
+            Meals for {selectedDate} - {user}
+          </h2>
           <div className="meals-container">
             <div className="row">
               {filteredMeals.length > 0 ? (
@@ -196,12 +175,10 @@ function MealsContainer() {
               )}
             </div>
           </div>
-
-          {/* Add Meal Button */}
           <button onClick={goToAddPage}>Add Meal</button>
         </>
       ) : (
-        <p className="text-center">Please log in to view meals.</p>
+        <p className="text-center">Please log in to use the food tracker.</p>
       )}
     </div>
   )

@@ -7,18 +7,16 @@ function AddMeal() {
   const { foods, setFoods } = useContext(FoodContext)
   const [foodsChoice, setFoodsChoice] = useState([])
   const [loading, setLoading] = useState(true)
-  // const [date, setDate] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD
-  // const [time, setTime] = useState('')
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   ) // HH:MM
   const [selectedFoods, setSelectedFoods] = useState([])
-  const [searchQuery, setSearchQuery] = useState('') // Search query state
+  const [searchQuery, setSearchQuery] = useState('')
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const navigate = useNavigate()
   const [user, setUser] = useState(localStorage.getItem('username'))
-  const [addedFood, setAddedFood] = useState('') // For single dropdown selection
+  const [addedFood, setAddedFood] = useState('')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('') // 'success' or 'error'
 
@@ -26,7 +24,6 @@ function AddMeal() {
   useEffect(() => {
     if (foods.length === 0) {
       axios
-        // .get('http://localhost:3005/foods')
         .get(`${host}api/foods/`)
         .then((response) => {
           setFoodsChoice(response.data)
@@ -47,7 +44,6 @@ function AddMeal() {
     }
   }, [message])
 
-  // Filter foods based on search query
   const filteredFoods = foodsChoice.filter((food) =>
     food.name.toLowerCase().startsWith(searchQuery.toLowerCase())
   )
@@ -57,8 +53,6 @@ function AddMeal() {
       const newMeal = { user, date, time, food_info: selectedFoods }
       try {
         await axios.post(`${host}api/meals/`, newMeal)
-        // setTime('')
-        // setDate('')
         setTime(
           new Date().toLocaleTimeString([], {
             hour: '2-digit',
@@ -69,7 +63,6 @@ function AddMeal() {
         setSelectedFoods([])
         setMessage('Meal added successfully!')
         setMessageType('success')
-        console.log('Meal Added:', newMeal, localStorage.getItem('username'))
       } catch (error) {
         console.error('Error saving meal:', error)
         setMessage('Failed to add meal. Please try again.')
@@ -77,13 +70,12 @@ function AddMeal() {
       }
     } else {
       alert('Please fill out all fields!')
-      console.log('Please fill out all fields')
     }
   }
   const addFoodToSelectedFoods = () => {
     if (addedFood && addedFood !== '' && !selectedFoods.includes(addedFood)) {
       const foodId = parseInt(addedFood, 10) // Ensure the ID matches the type in foods
-      const food = foods.find((f) => f.id === foodId) // Lookup food by ID
+      const food = foods.find((f) => f.id === foodId)
       const foodName = food ? food.name : 'Unknown food'
       setSelectedFoods([...selectedFoods, addedFood])
       setAddedFood('')
@@ -156,13 +148,13 @@ function AddMeal() {
           <button type="button" onClick={addFoodToSelectedFoods}>
             Add Selected Food
           </button>
-          <p>The foods you have selected:</p>
+          <p className="food-item"> The foods you have selected:</p>
           <ul>
             {selectedFoods.length > 0 ? (
               selectedFoods.map((foodId) => {
-                const food = foods.find((f) => f.id === parseInt(foodId)) // Find food by ID
+                const food = foods.find((f) => f.id === parseInt(foodId))
                 return (
-                  <li key={foodId}>
+                  <li key={foodId} className="food-item">
                     {food ? food.name : `Food with ID ${foodId} not found`}
                   </li>
                 )
@@ -180,7 +172,7 @@ function AddMeal() {
           </button>
         </>
       ) : (
-        <p className="text-center">Please log in to view meals.</p>
+        <p className="text-center">Please log in to use the food tracker.</p>
       )}
     </div>
   )

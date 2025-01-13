@@ -10,11 +10,10 @@ function Login() {
   const { login, setLogin } = useContext(LoginContext)
   const [message, setMessage] = useState('')
   const [host, setHost] = useState(`http://127.0.0.1:8000/`)
-  const navigate = useNavigate() // This must be inside the component body
-  const [messageType, setMessageType] = useState('') // 'success' or 'error'
+  const navigate = useNavigate()
+  const [messageType, setMessageType] = useState('')
 
   function doLogin() {
-    console.log(`login success with username: ${userName} password:${password}`)
     if (!password || !userName) {
       setMessage('Please add both username and password')
       setMessageType('error')
