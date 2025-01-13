@@ -166,22 +166,33 @@ button[type='button']:last-of-type:hover {
 }
 
 .meal-card {
-  background-color: #f1f1f1;
+  font-family: 'Arial', sans-serif; /* Default font for the meal card */
+  border: 1px solid #ccc;
   padding: 15px;
+  margin-bottom: 20px;
   border-radius: 8px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
 .meal-card h4 {
   color: #007bff;
   margin-bottom: 10px;
+  font-style: italic;
 }
 
 .meal-card p {
-  color: #555;
+  color: black;
   margin: 5px 0;
+  font-style: italic;
+}
+
+.food-list {
+  margin-left: 10px;
+}
+
+.food-item {
+  margin-bottom: 5px;
+  font-style: italic;
 }
 
 .meal-card button {

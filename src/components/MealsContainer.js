@@ -2,14 +2,16 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import MealContext from './MealContext'
 import { useNavigate } from 'react-router-dom'
+import FoodContext from './FoodContext'
 
 function MealsContainer() {
-  const [foods, setFoods] = useState([])
+  const [foodTypes, setFoodTypes] = useState([])
+  const { foods, setFoods } = useContext(FoodContext)
   const { meals, setMeals } = useContext(MealContext)
-  // const [selectedDate, setSelectedDate] = useState('') // State for the selected date
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0] // Default to today's date
-  )
+  const [selectedDate, setSelectedDate] = useState('') // State for the selected date
+  // const [selectedDate, setSelectedDate] = useState(
+  //   new Date().toISOString().split('T')[0] // Default to today's date
+  // )
   const [filteredMeals, setFilteredMeals] = useState([]) // State for filtered meals
   const [clicked, setClicked] = useState(false)
   const [host, setHost] = useState('http://127.0.0.1:8000/')
@@ -22,6 +24,14 @@ function MealsContainer() {
     console.log('starting app')
     getMeals()
     axios
+      .get(`${host}api/foodTypes/`)
+      .then((response) => {
+        setFoodTypes(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching food types:', error)
+      })
+    axios
       .get(`${host}api/foods/`)
       .then((response) => {
         setFoods(response.data) // Update the foods state with the response
@@ -29,13 +39,11 @@ function MealsContainer() {
       .catch((error) => {
         console.error('Error fetching foods:', error)
       })
-
     console.log('user:', localStorage.getItem('username'))
     fetchMealsByDate()
   }, [selectedDate]) // Empty dependency array means it runs only once
   function getMeals() {
     axios
-      // .get('http://localhost:3005/meals')
       .get(`${host}api/meals/`)
       .then((response) => {
         setMeals(response.data)
@@ -59,16 +67,15 @@ function MealsContainer() {
       setClicked(false) // Ensure the header shows the "no selected date" message
     }
   }
+  function setTodayDate() {
+    setSelectedDate(new Date().toISOString().split('T')[0])
+  }
   function deleteMeal(mealId) {
     console.log(mealId)
     axios
-      // .delete(`http://localhost:3005/meals/${mealId}`)
       .delete(`${host}meals/${mealId}/`)
       .then((response) => {
         console.log('Meal deleted successfully:', response.data)
-        // Optionally refresh the meals list or update UI here
-        // getMeals()
-        // fetchMealsByDate()
         const updatedMeals = meals.filter(
           (meal) => meal.id !== mealId && meal.user === user
         )
@@ -81,14 +88,38 @@ function MealsContainer() {
         console.error('Error deleting meal:', error)
       })
   }
-  const mapFoodInfoToNames = (foodInfo) => {
+  // const mapFoodInfoToNames = (foodInfo) => {
+  //   return foodInfo
+  //     .map((foodId) => {
+  //       const food = foods.find((f) => f.id === foodId)
+  //       return food ? food.name : null
+  //     })
+  //     .filter(Boolean)
+  //     .join(', ')
+  // }
+  const mapFoodInfoToNamesAndTypes = (foodInfo) => {
+    if (!Array.isArray(foodInfo)) {
+      console.warn('Invalid foodInfo:', foodInfo)
+      return [] // Ensure foodInfo is an array
+    }
     return foodInfo
       .map((foodId) => {
         const food = foods.find((f) => f.id === foodId)
-        return food ? food.name : null
+        if (food) {
+          const foodTypeNames = food.typesOfFood
+            .map((typeId) => {
+              const type = foodTypes.find((t) => t.id === typeId)
+              return type ? type.type : null
+            })
+            .filter(Boolean)
+            .join(', ')
+
+          return `${food.name} - ${foodTypeNames}`
+        }
+        return null
       })
       .filter(Boolean)
-      .join(', ')
+    // .join(', ')
   }
   const goToAddPage = () => {
     navigate('/addMeal') // Use this function for navigation
@@ -111,9 +142,7 @@ function MealsContainer() {
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
             />
-            <button onClick={fetchMealsByDate} disabled={!selectedDate}>
-              Show Meals
-            </button>
+            <button onClick={setTodayDate}>Show today's meals</button>
           </div>
 
           {/* Check for token in localStorage */}
@@ -129,14 +158,22 @@ function MealsContainer() {
                 filteredMeals.map((meal) => (
                   <div key={meal.id} className="col-sm-6 col-md-4">
                     <div className="meal-card">
-                      <h4>{meal.date}</h4>
-                      <p>Time: {meal.time}</p>
-                      <p>
-                        Foods:{' '}
-                        {meal.food_info.length > 0
-                          ? mapFoodInfoToNames(meal.food_info)
-                          : 'No foods available'}
-                      </p>
+                      <h4 className="food-list">{meal.date}</h4>
+                      <p className="food-list">Time: {meal.time}</p>
+                      <p>Foods:</p>
+                      {meal.food_info.length > 0 ? (
+                        <div className="food-list">
+                          {mapFoodInfoToNamesAndTypes(meal.food_info).map(
+                            (foodTypeInfo, index) => (
+                              <div key={index} className="food-item">
+                                <span>{foodTypeInfo}</span>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      ) : (
+                        <p>No foods available</p>
+                      )}
                       <button
                         onClick={() =>
                           window.confirm(
