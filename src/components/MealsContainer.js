@@ -17,7 +17,6 @@ function MealsContainer() {
   const navigate = useNavigate() // This must be inside the component body
 
   useEffect(() => {
-    console.log('starting app')
     getMeals()
     axios
       .get(`${host}api/foodTypes/`)
@@ -38,6 +37,7 @@ function MealsContainer() {
     console.log('user:', localStorage.getItem('username'))
     fetchMealsByDate()
   }, [selectedDate])
+
   function getMeals() {
     axios
       .get(`${host}api/meals/`)
@@ -114,7 +114,9 @@ function MealsContainer() {
           <div className="header">
             <h1>Welcome to your food tracker</h1>
             <h1>Meals by Date</h1>
-            <p>Select a date to see all meals for that day</p>
+            <p className="food-item">
+              Select a date to see all meals for that day
+            </p>
           </div>
 
           <div className="filter-section">

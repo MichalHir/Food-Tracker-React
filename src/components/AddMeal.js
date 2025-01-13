@@ -7,7 +7,9 @@ function AddMeal() {
   const { foods, setFoods } = useContext(FoodContext)
   const [foodsChoice, setFoodsChoice] = useState([])
   const [loading, setLoading] = useState(true)
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD
+  const [date, setDate] = useState(
+    new Date().toISOString().split('T')[0] // Extracts only the YYYY-MM-DD part from the ISO string
+  )
   const [time, setTime] = useState(
     new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   ) // HH:MM
