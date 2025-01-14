@@ -52,6 +52,7 @@ function SearchFood() {
   }
   const handleTypeChange = (e) => {
     const options = e.target.options
+    console.log(options)
     const selectedValues = []
     for (let i = 0; i < options.length; i++) {
       if (options[i].selected) {
@@ -60,6 +61,19 @@ function SearchFood() {
     }
     setSelectedTypes(selectedValues)
   }
+  // const handleTypeChange = (event) => {
+  //   const value = event.target.value
+  //   setSelectedTypes((SelectedTypes) => {
+  //     if (SelectedTypes.includes(value)) {
+  //       // Remove if already selected
+  //       return SelectedTypes.filter((type) => type !== value)
+  //     } else {
+  //       // Add if not selected
+  //       return [...SelectedTypes, value]
+  //     }
+  //   })
+  // }
+
   const goToHomePage = () => {
     navigate('/')
   }
