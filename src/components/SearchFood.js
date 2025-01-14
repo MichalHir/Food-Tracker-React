@@ -61,19 +61,6 @@ function SearchFood() {
     }
     setSelectedTypes(selectedValues)
   }
-  // const handleTypeChange = (event) => {
-  //   const value = event.target.value
-  //   setSelectedTypes((SelectedTypes) => {
-  //     if (SelectedTypes.includes(value)) {
-  //       // Remove if already selected
-  //       return SelectedTypes.filter((type) => type !== value)
-  //     } else {
-  //       // Add if not selected
-  //       return [...SelectedTypes, value]
-  //     }
-  //   })
-  // }
-
   const goToHomePage = () => {
     navigate('/')
   }

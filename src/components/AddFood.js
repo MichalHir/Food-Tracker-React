@@ -8,6 +8,9 @@ function AddFood() {
   const { foods, setFoods } = useContext(FoodContext)
   const [name, setName] = useState('')
   const [foodTypes, setFoodTypes] = useState([])
+  // const [host, setHost] = useState(
+  //   'https://food-tracker-react-backend.onrender.com/'
+  // )
   const [host, setHost] = useState('http://127.0.0.1:8000/')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('') // 'success' or 'error'
@@ -23,7 +26,7 @@ function AddFood() {
     axios
       .get(`${host}api/foods/`)
       .then((response) => {
-        setFoods(response.data) 
+        setFoods(response.data)
       })
       .catch((error) => {
         console.error('Error fetching foods:', error)
@@ -50,7 +53,7 @@ function AddFood() {
           setMessage(`Food with name "${name}" already exists.`)
           setMessageType('error')
           console.log('Duplicate food detected:', name)
-          return 
+          return
         }
         await axios.post(`${host}api/foods/`, newFood)
         setFoods([...existingFoods, newFood])
